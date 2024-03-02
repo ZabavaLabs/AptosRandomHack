@@ -57,10 +57,10 @@ module nft_tooling::random_mint_test {
         let uri4 = string::utf8(b"uri4");
 
 
-        random_mint::add_nft_entry(creator, name1, description1, uri1);
-        random_mint::add_nft_entry(creator, name2, description2, uri2);
-        random_mint::add_nft_entry(creator, name3, description3, uri3);
-        random_mint::add_nft_entry(creator, name4, description4, uri4);
+        random_mint::add_nft_entry(creator, name1, description1, uri1, 1);
+        random_mint::add_nft_entry(creator, name2, description2, uri2, 1);
+        random_mint::add_nft_entry(creator, name3, description3, uri3, 1);
+        random_mint::add_nft_entry(creator, name4, description4, uri4, 1);
 
         assert!(random_mint::get_nft_table_length()==4, EINVALID_TABLE_LENGTH);
 
