@@ -12,6 +12,11 @@ git = "https://github.com/aptos-labs/aptos-core.git"
 rev = "randomnet"
 subdir = "aptos-move/framework/aptos-stdlib"
 
+[dependencies.AptosTokenObjects]
+git = 'https://github.com/aptos-labs/aptos-core.git'
+rev = 'randomnet'
+subdir = 'aptos-move/framework/aptos-token-objects'
+
 [addresses]
 std = "0x1"
 aptos_std = "0x1"
