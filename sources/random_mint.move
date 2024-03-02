@@ -3,6 +3,8 @@ module nft_tooling::random_mint {
     use aptos_framework::account::{Self, SignerCapability};
     use aptos_framework::object::{Self, Object};
     use aptos_std::smart_table::{Self, SmartTable};
+    use aptos_std::simple_map::{Self, SimpleMap};
+
     use aptos_token_objects::collection;
     use aptos_token_objects::token::{Self, Token};
     use std::string::{Self, String};
@@ -38,6 +40,8 @@ module nft_tooling::random_mint {
     const ENOT_DEPLOYER: u64 = 1;
     const ENOT_OWNER: u64 = 2;
     const ENFT_ID_NOT_FOUND: u64 = 3;
+    const EUNABLE_TO_MINT: u64 = 4;
+    const EWEIGHT_ZERO: u64 = 5;
 
     const MINT_FEE:u64 = 1_000_000;
 
@@ -65,6 +69,11 @@ module nft_tooling::random_mint {
     struct NFTInfo has key {
         table: SmartTable<u64, NFTInfoEntry>,
         total_weight: u64
+    }
+
+    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+    struct MintInfo has key {
+        simple_map: SimpleMap<address, u64>,
     }
 
     // Tokens require a signer to create, so this is the signer for the collection
@@ -104,15 +113,22 @@ module nft_tooling::random_mint {
 
         
         let nft_info_table = aptos_std::smart_table::new();
+        let simple_map = aptos_std::simple_map::new();
+
 
         let nft_info = NFTInfo{
             table: nft_info_table,
             total_weight: 0
         };
         move_to(&collection_signer, nft_info);
+
+        let mint_info = MintInfo{
+            simple_map: simple_map,
+        };
+        move_to(&collection_signer, mint_info);
     }
 
-     fun create_nft_collection(signer_resource: &signer, description: String, name: String, uri: String): signer {
+    fun create_nft_collection(signer_resource: &signer, description: String, name: String, uri: String): signer {
         let collection_constructor_ref = collection::create_unlimited_collection(
             signer_resource,
             description,
@@ -131,39 +147,71 @@ module nft_tooling::random_mint {
         object_signer
     }
 
+    public entry fun add_nft_entry(
+        account: &signer, 
+        name: String, 
+        description: String, 
+        uri: String,
+        weight: u64
+        ) acquires NFTInfo {
+
+        assert!(signer::address_of(account) == @nft_tooling ,ENOT_DEPLOYER);
+        assert!(weight > 0 , EWEIGHT_ZERO);
+
+        let nft_info = borrow_global_mut<NFTInfo>(nft_collection_address());
+        nft_info.total_weight = nft_info.total_weight + weight;
+        let nft_info_table = &mut borrow_global_mut<NFTInfo>(nft_collection_address()).table;
+        let table_length = aptos_std::smart_table::length(nft_info_table);
+
+        let nft_info_entry = NFTInfoEntry{
+            name,
+            description,
+            uri,
+            weight
+        };
+        smart_table::add(nft_info_table, table_length, nft_info_entry);
+    }
+
     // Commits the result of the randomness to a token which is sent to the user.
-    public(friend) entry fun mint_nft(user: &signer) acquires ResourceCapability, NFTInfo {
+    public(friend) entry fun mint_nft(user: &signer) acquires NFTInfo, MintInfo {
         let random_number = randomness::u64_range(0, get_nft_total_weight());
+        
         debug::print(&utf8(b"random number was:"));
         debug::print(&random_number);
         coin::transfer<AptosCoin>(user, @nft_tooling, MINT_FEE);
+        assert!(able_to_mint(signer::address_of(user)), EUNABLE_TO_MINT);
+        // create_ticket(user, random_number);
+        let user_addr = signer::address_of(user);
+        let simple_map = &mut borrow_global_mut<MintInfo>(nft_collection_address()).simple_map;
 
-        create_ticket(user, random_number);
+        aptos_std::simple_map::upsert(simple_map, user_addr, random_number); 
     }
 
-    // User uses the token to claim the nft
-    public entry fun claim_nft(user: &signer, random_number_token: Object<Token>) acquires ResourceCapability, NFTInfo, TicketCapability {
-        assert!(token::creator(random_number_token) == signer::address_of(&get_token_signer()), ENFT_ID_NOT_FOUND);
-        assert!(object::is_owner(random_number_token, signer::address_of(user)), ENOT_OWNER);
-
-        let random_number = property_map::read_u64(&random_number_token, &string::utf8(b"RANDOM_NUMBER"));
+    // User uses mapping to claim the nft
+    public(friend) entry fun claim_nft_from_map(user: &signer) acquires ResourceCapability, NFTInfo, MintInfo {
         let table_length = get_nft_table_length();
-        let i = 0;
-        let sum = 0;
-        let nft_id = 0;
-        let next_sum = 0;
+        let user_addr = signer::address_of(user);
+        let simple_map = &mut borrow_global_mut<MintInfo>(nft_collection_address()).simple_map;
+        let random_number: u64 = *aptos_std::simple_map::borrow(simple_map, &user_addr);
+
+        let i: u64 = 0;
+        let sum: u64 = 0;
+        let nft_id: u64 = 0;
+        let next_sum: u64 = 0;
         while (i < table_length) {
             let current_weight = get_nft_info_entry(i).weight;
             next_sum = sum + current_weight;
             if (random_number >= sum && random_number < next_sum) {
                 nft_id = i;
+                debug::print(&utf8(b"nft id to claim is:"));
+                debug::print(&nft_id);
                 assert!(nft_id_exists(nft_id), ENFT_ID_NOT_FOUND);
-                burn_ticket(user, random_number_token);
                 let nft_info_entry = get_nft_info_entry(nft_id);        
                 create_nft(user, 
                 nft_info_entry.name, 
                 nft_info_entry.description, nft_info_entry.uri, 
                 );
+                aptos_std::simple_map::remove(simple_map, &user_addr);
                 break
             };
             sum = next_sum;
@@ -172,38 +220,7 @@ module nft_tooling::random_mint {
 
     }
 
-    fun create_nft(
-        user: &signer,
-        token_name: String, 
-        token_description: String, token_uri: String, 
-    ): Object<NFTCapability> acquires ResourceCapability {
-
-        let constructor_ref = token::create(
-            &get_token_signer(),
-            string::utf8(NFT_COLLECTION_NAME),
-            token_description,
-            token_name,
-            option::none(),
-            token_uri,
-        );
-
-        let token_signer = object::generate_signer(&constructor_ref);
-        let mutator_ref = token::generate_mutator_ref(&constructor_ref);
-        let burn_ref = token::generate_burn_ref(&constructor_ref);
-   
-
-        let new_nft = NFTCapability {
-            mutator_ref,
-            burn_ref
-
-        };
-
-        move_to(&token_signer, new_nft);
-        let created_token = object::object_from_constructor_ref<Token>(&constructor_ref);
-        object::transfer(&get_token_signer() , created_token, signer::address_of(user));
-        object::address_to_object(signer::address_of(&token_signer))
-    }
-
+    // Only use if storing result on a user's ticket token
     fun create_ticket(
         user: &signer,
         random_number: u64
@@ -243,30 +260,39 @@ module nft_tooling::random_mint {
         object::address_to_object(signer::address_of(&token_signer))
     }
 
-    public entry fun add_nft_entry(
-        account: &signer, 
-        name: String, 
-        description: String, 
-        uri: String,
-        weight: u64
-        ) acquires NFTInfo {
+    // Only use if storing result on a user's ticket token
+    // User uses the token to claim the nft
+    public entry fun claim_nft_from_ticket(user: &signer, random_number_token: Object<Token>) acquires ResourceCapability, NFTInfo, TicketCapability {
+        assert!(token::creator(random_number_token) == signer::address_of(&get_token_signer()), ENFT_ID_NOT_FOUND);
+        assert!(object::is_owner(random_number_token, signer::address_of(user)), ENOT_OWNER);
 
-        assert!(signer::address_of(account) == @nft_tooling ,ENOT_DEPLOYER);
-
-        let nft_info = borrow_global_mut<NFTInfo>(nft_collection_address());
-        nft_info.total_weight = nft_info.total_weight + weight;
-        let nft_info_table = &mut borrow_global_mut<NFTInfo>(nft_collection_address()).table;
-        let table_length = aptos_std::smart_table::length(nft_info_table);
-
-        let nft_info_entry = NFTInfoEntry{
-            name,
-            description,
-            uri,
-            weight
+        let random_number = property_map::read_u64(&random_number_token, &string::utf8(b"RANDOM_NUMBER"));
+        let table_length = get_nft_table_length();
+        let i = 0;
+        let sum = 0;
+        let nft_id = 0;
+        let next_sum = 0;
+        while (i < table_length) {
+            let current_weight = get_nft_info_entry(i).weight;
+            next_sum = sum + current_weight;
+            if (random_number >= sum && random_number < next_sum) {
+                nft_id = i;
+                assert!(nft_id_exists(nft_id), ENFT_ID_NOT_FOUND);
+                burn_ticket(user, random_number_token);
+                let nft_info_entry = get_nft_info_entry(nft_id);        
+                create_nft(user, 
+                nft_info_entry.name, 
+                nft_info_entry.description, nft_info_entry.uri, 
+                );
+                break
+            };
+            sum = next_sum;
+            i = i + 1;
         };
-        smart_table::add(nft_info_table, table_length, nft_info_entry);
+
     }
 
+    // Only use if storing result on a user's ticket token
     fun burn_ticket(from: &signer, ticket_token: Object<Token>) acquires TicketCapability{
         assert!(object::is_owner(ticket_token, signer::address_of(from)), ENOT_OWNER);
         let retrieved_ticket_token = move_from<TicketCapability>(object::object_address(&ticket_token));
@@ -281,6 +307,38 @@ module nft_tooling::random_mint {
     // Utility function
     fun get_token_signer(): signer acquires ResourceCapability {
         account::create_signer_with_capability(&borrow_global<ResourceCapability>(nft_collection_address()).capability)
+    }
+
+    fun create_nft(
+        user: &signer,
+        token_name: String, 
+        token_description: String, token_uri: String, 
+    ): Object<NFTCapability> acquires ResourceCapability {
+
+        let constructor_ref = token::create(
+            &get_token_signer(),
+            string::utf8(NFT_COLLECTION_NAME),
+            token_description,
+            token_name,
+            option::none(),
+            token_uri,
+        );
+
+        let token_signer = object::generate_signer(&constructor_ref);
+        let mutator_ref = token::generate_mutator_ref(&constructor_ref);
+        let burn_ref = token::generate_burn_ref(&constructor_ref);
+   
+
+        let new_nft = NFTCapability {
+            mutator_ref,
+            burn_ref
+
+        };
+
+        move_to(&token_signer, new_nft);
+        let created_token = object::object_from_constructor_ref<Token>(&constructor_ref);
+        object::transfer(&get_token_signer() , created_token, signer::address_of(user));
+        object::address_to_object(signer::address_of(&token_signer))
     }
 
     // View function
@@ -321,6 +379,20 @@ module nft_tooling::random_mint {
     public fun get_nft_total_weight(): u64 acquires NFTInfo {
        let nft_info = borrow_global<NFTInfo>(nft_collection_address());
        nft_info.total_weight
+    } 
+
+    // We make it such that the user has to claim the previous prizes before being able to mint 
+    #[view]
+    public fun able_to_mint(user_addr: address): bool acquires MintInfo {
+       let mint_info = borrow_global<MintInfo>(nft_collection_address());
+       let simple_map = mint_info.simple_map;
+       let contains_key = aptos_std::simple_map::contains_key(&simple_map, &user_addr);
+       if (!contains_key){
+            true
+       } else {
+            false
+       }
+      
     } 
     
     // Testing functions

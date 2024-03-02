@@ -1,8 +1,8 @@
 module nft_tooling::random_mint_test {
-    use aptos_framework::randomness;
-    use std::string::{Self, String};
-    use std::signer;
-    use aptos_framework::coin;
+    use aptos_framework::randomness::{Self};
+    use std::string::{Self};
+    use std::signer::{Self};
+    use aptos_framework::coin::{Self};
     use aptos_framework::aptos_coin::{Self, AptosCoin};
 
 
@@ -56,36 +56,34 @@ module nft_tooling::random_mint_test {
         let description4 = string::utf8(b"description4");
         let uri4 = string::utf8(b"uri4");
 
-
-        random_mint::add_nft_entry(creator, name1, description1, uri1, 1);
-        random_mint::add_nft_entry(creator, name2, description2, uri2, 1);
-        random_mint::add_nft_entry(creator, name3, description3, uri3, 1);
-        random_mint::add_nft_entry(creator, name4, description4, uri4, 1);
+        // Can assign any weight to the various items
+        random_mint::add_nft_entry(creator, name1, description1, uri1, 300);
+        random_mint::add_nft_entry(creator, name2, description2, uri2, 100);
+        random_mint::add_nft_entry(creator, name3, description3, uri3, 100);
+        random_mint::add_nft_entry(creator, name4, description4, uri4, 100);
 
         assert!(random_mint::get_nft_table_length()==4, EINVALID_TABLE_LENGTH);
 
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
+        random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-        random_mint::mint_nft(u1);
-
-      
+        random_mint::claim_nft_from_map(u1);
 
 
         let balance = coin::balance<AptosCoin>(signer::address_of(u1));
