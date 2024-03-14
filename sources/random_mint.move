@@ -34,7 +34,11 @@ module nft_tooling::random_mint {
     const TICKET_TOKEN_DESCRIPTION: vector<u8> = b"Ticket which is used to redeem NFTs.";
     const TICKET_TOKEN_URI: vector<u8> = b"https://cdn.pixabay.com/photo/2012/05/03/23/13/cat-46676_1280.png";
 
+    #[test_only]
     friend nft_tooling::random_mint_test;
+
+    #[test_only]
+    friend nft_tooling::spin_wheel_test;
 
     // Error Codes
     const ENOT_DEPLOYER: u64 = 1;
@@ -399,6 +403,16 @@ module nft_tooling::random_mint {
     #[test_only]
     public fun initialize_for_test(creator: &signer) {
         init_module(creator);
+    }
+
+    #[test_only]
+    public (friend) fun create_nft_for_test(
+        user: &signer,
+        token_name: String, 
+        token_description: String, token_uri: String, 
+    ): Object<NFTCapability> acquires ResourceCapability {
+        create_nft(user, token_name, token_description, token_uri)
+
     }
 
     #[test_only]
