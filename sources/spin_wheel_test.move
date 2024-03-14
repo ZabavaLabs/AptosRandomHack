@@ -16,11 +16,7 @@ module nft_tooling::spin_wheel_test {
     use nft_tooling::random_mint::{Self};
     use nft_tooling::spin_wheel::{Self};
 
-    const APP_OBJECT_SEED: vector<u8> = b"NFT_NAME";
-    const NFT_COLLECTION_NAME: vector<u8> = b"My NFT Collection";
-    const NFT_COLLECTION_DESCRIPTION: vector<u8> = b"My NFT Collection Description";
-    const NFT_COLLECTION_URI: vector<u8> = b"https://cdn.pixabay.com/photo/2012/05/03/23/13/cat-46676_1280.png";
-
+    const TIME_BETWEEN_SPINS: u64 = 24 * 60 * 60 * 1_000_000; 
 
     // Error Codes
     const ENOT_DEPLOYER: u64 = 1;
@@ -78,6 +74,17 @@ module nft_tooling::spin_wheel_test {
         spin_wheel::claim_spin_prize(u1, token);
         assert!(spin_wheel::prize_number(token) == 0, EINVALID_PRIZE);
 
+        timestamp::update_global_time_for_test(TIME_BETWEEN_SPINS + 1);
+        spin_wheel::spin_with_nft(u1, token);
+        spin_wheel::claim_spin_prize(u1, token);
+
+        timestamp::update_global_time_for_test(2 * (TIME_BETWEEN_SPINS + 1));
+        spin_wheel::spin_with_nft(u1, token);
+        spin_wheel::claim_spin_prize(u1, token);
+
+        timestamp::update_global_time_for_test(3 * (TIME_BETWEEN_SPINS + 1));
+        spin_wheel::spin_with_nft(u1, token);
+        spin_wheel::claim_spin_prize(u1, token);
     }
 
 

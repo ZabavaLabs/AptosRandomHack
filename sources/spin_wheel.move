@@ -46,7 +46,14 @@ module nft_tooling::spin_wheel {
     // 1 Day
     const TIME_BETWEEN_SPINS: u64 = 24 * 60 * 60 * 1_000_000; 
 
-    const SPIN_SLOTS: u64 = 4;
+    const SPIN_SLOTS: u64 = 6;
+    const PRIZE_1:u64 = 1_000_000;
+    const PRIZE_2:u64 = 2_000_000;
+    const PRIZE_3_NFT_ID:u64 = 1;
+    const PRIZE_4_NFT_ID_1:u64 = 2;
+    const PRIZE_4_NFT_ID_2:u64 = 3;
+    
+
 
     struct NftMap has key, store, copy {
         simple_map: SimpleMap<address, NftSpinInfo>,
@@ -66,12 +73,12 @@ module nft_tooling::spin_wheel {
         move_to(deployer, nft_map);
     }
 
-   
-
     // Commits the result of the randomness to a map.
     public(friend) entry fun spin_with_nft(user: &signer, nft: Object<Token> ) acquires NftMap {
-        assert!(able_to_spin(nft), ECLAIM_FIRST);   
-        let random_number = randomness::u64_range(1, SPIN_SLOTS);
+        assert!(able_to_spin(nft), ECLAIM_FIRST);  
+        assert!(object::is_owner(nft, signer::address_of(user)), ENOT_OWNER);
+
+        let random_number = randomness::u64_range(1, SPIN_SLOTS + 1);
         let nft_addr = object::object_address(&nft);
         
         debug::print(&utf8(b"spin random number was:"));
@@ -87,22 +94,53 @@ module nft_tooling::spin_wheel {
 
     // Claim Prize.
     public(friend) entry fun claim_spin_prize(user: &signer, nft: Object<Token> ) acquires NftMap {
-        let random_number = randomness::u64_range(1, SPIN_SLOTS);
-        let nft_addr = object::object_address(&nft);
-        
+        assert!(object::is_owner(nft, signer::address_of(user)), ENOT_OWNER);
         let prize_number = prize_number(nft);
         assert!(prize_number!=0,EUNABLE_TO_CLAIM);
 
-        // TODO: Perform the various actions depending prize number
+        let nft_addr = object::object_address(&nft);
+
+        // Perform the various actions depending prize number
+        if (prize_number == 1){
+            coin::transfer<AptosCoin>(user, @nft_tooling, PRIZE_1 );
+        } else if (prize_number == 2){
+            coin::transfer<AptosCoin>(user, @nft_tooling, PRIZE_2 );
+        } else if (prize_number == 3)
+        {
+            let nft_info_name = random_mint::get_nft_name(PRIZE_3_NFT_ID);  
+            let nft_info_description = random_mint::get_nft_description(PRIZE_3_NFT_ID);        
+            let nft_info_uri = random_mint::get_nft_uri(PRIZE_3_NFT_ID);        
+
+            random_mint::create_nft(user, 
+            nft_info_name, 
+            nft_info_description, nft_info_uri, 
+            );
+        }else if (prize_number == 4)
+        {
+            let nft_info_name = random_mint::get_nft_name(PRIZE_4_NFT_ID_1);  
+            let nft_info_description = random_mint::get_nft_description(PRIZE_4_NFT_ID_1);        
+            let nft_info_uri = random_mint::get_nft_uri(PRIZE_4_NFT_ID_1);        
+
+            random_mint::create_nft(user, 
+            nft_info_name, 
+            nft_info_description, nft_info_uri, 
+            );
+
+            let nft_info_name_2 = random_mint::get_nft_name(PRIZE_4_NFT_ID_2);  
+            let nft_info_description_2 = random_mint::get_nft_description(PRIZE_4_NFT_ID_2);        
+            let nft_info_uri_2 = random_mint::get_nft_uri(PRIZE_4_NFT_ID_2);        
+
+            random_mint::create_nft(user, 
+            nft_info_name_2, 
+            nft_info_description_2, nft_info_uri_2, 
+            );
+
+        };
+        
 
         let simple_map = &mut borrow_global_mut<NftMap>(@nft_tooling).simple_map;
         let nft_spin_info = aptos_std::simple_map::borrow_mut(simple_map, &nft_addr);
         nft_spin_info.spin_result = 0;
-        // let nft_spin_info = NftSpinInfo{
-        //     spin_result: random_number,
-        //     timestamp: timestamp::now_microseconds()
-        // };
-        // aptos_std::simple_map::upsert(simple_map, nft_addr, nft_spin_info); 
     }
 
     // View function
@@ -121,13 +159,12 @@ module nft_tooling::spin_wheel {
             } 
         else {
             let nft_spin_info: NftSpinInfo = *aptos_std::simple_map::borrow(&simple_map, &nft_addr);
-            if ( timestamp::now_microseconds() < nft_spin_info.timestamp + TIME_BETWEEN_SPINS){
-                output = false;
+            if ( timestamp::now_microseconds() > nft_spin_info.timestamp + TIME_BETWEEN_SPINS && nft_spin_info.spin_result == 0){
+                output = true;
+            }else{
+                output = false
             };
-     
-            if ( nft_spin_info.spin_result != 0) {
-                output = false;
-            };
+    
         };
         output
     } 

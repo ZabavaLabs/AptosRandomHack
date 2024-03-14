@@ -40,6 +40,8 @@ module nft_tooling::random_mint {
     #[test_only]
     friend nft_tooling::spin_wheel_test;
 
+    friend nft_tooling::spin_wheel;
+
     // Error Codes
     const ENOT_DEPLOYER: u64 = 1;
     const ENOT_OWNER: u64 = 2;
@@ -313,7 +315,7 @@ module nft_tooling::random_mint {
         account::create_signer_with_capability(&borrow_global<ResourceCapability>(nft_collection_address()).capability)
     }
 
-    fun create_nft(
+    public (friend) fun create_nft(
         user: &signer,
         token_name: String, 
         token_description: String, token_uri: String, 
@@ -371,6 +373,24 @@ module nft_tooling::random_mint {
     public fun get_nft_info_entry(nft_id: u64): NFTInfoEntry acquires NFTInfo {
         let nft_info_table = &borrow_global<NFTInfo>(nft_collection_address()).table;
         *smart_table::borrow(nft_info_table, nft_id)
+    }
+
+    #[view]
+    public fun get_nft_name(nft_id: u64): String acquires NFTInfo {
+        let nft_info_table = &borrow_global<NFTInfo>(nft_collection_address()).table;
+        smart_table::borrow(nft_info_table, nft_id).name
+    }
+
+    #[view]
+    public fun get_nft_description(nft_id: u64): String acquires NFTInfo {
+        let nft_info_table = &borrow_global<NFTInfo>(nft_collection_address()).table;
+        smart_table::borrow(nft_info_table, nft_id).description
+    }
+
+    #[view]
+    public fun get_nft_uri(nft_id: u64): String acquires NFTInfo {
+        let nft_info_table = &borrow_global<NFTInfo>(nft_collection_address()).table;
+        smart_table::borrow(nft_info_table, nft_id).uri
     }
 
     #[view]
