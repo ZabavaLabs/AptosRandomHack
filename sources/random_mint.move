@@ -178,6 +178,20 @@ module nft_tooling::random_mint {
         smart_table::add(nft_info_table, table_length, nft_info_entry);
     }
 
+    public entry fun clear_nft_entries(
+        account: &signer, 
+        name: String, 
+        description: String, 
+        uri: String,
+        weight: u64
+        ) acquires NFTInfo {
+
+        assert!(signer::address_of(account) == @nft_tooling ,ENOT_DEPLOYER);
+        assert!(weight > 0 , EWEIGHT_ZERO);
+        let nft_info_table = &mut borrow_global_mut<NFTInfo>(nft_collection_address()).table;
+        smart_table::clear(nft_info_table);
+    }
+
     // Commits the result of the randomness to a token which is sent to the user.
     public(friend) entry fun mint_nft(user: &signer) acquires NFTInfo, MintInfo {
         let random_number = randomness::u64_range(0, get_nft_total_weight());
