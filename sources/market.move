@@ -32,10 +32,9 @@ module nft_tooling::market {
     const APP_SIGNER_CAPABILITY_SEED: vector<u8> = b"APP_SIGNER_CAPABILITY";
 
 
-    friend nft_tooling::random_mint_test;
 
     #[test_only]
-    friend nft_tooling::spin_wheel_test;
+    friend nft_tooling::market_test;
 
     // Error Codes
     const ENOT_DEPLOYER: u64 = 1;
@@ -111,11 +110,9 @@ module nft_tooling::market {
 
     public(friend) entry fun take_down_nft(user: &signer, nft: Object<Token> ) acquires NftListingMap, ObjectController {
         let caller_addr = signer::address_of(user);
-        assert!(object::is_owner(nft, caller_addr), ENOT_OWNER);
         assert!(able_to_buy_nft(nft), EINVALID_BUY_STATE);
         assert!(get_nft_listing_original_owner(nft) == caller_addr, ENOT_OWNER);
         // TODO:Send Object back to owner
-        // object::transfer(user, nft, caller_addr);
         object::transfer(&get_app_signer(), nft, caller_addr);
         
 
@@ -126,10 +123,10 @@ module nft_tooling::market {
         aptos_std::simple_map::remove(simple_map, &nft_addr); 
     }
 
-    public(friend) entry fun probabilistic_buy_nft(user: &signer, nft: Object<Token>, bid_price:u64 ) acquires NftListingMap {
+    public(friend) entry fun probabilistic_buy(user: &signer, nft: Object<Token>, bid_price:u64 ) acquires NftListingMap {
         let caller_addr = signer::address_of(user);
         assert!(able_to_buy_nft(nft), EINVALID_BUY_STATE);
-        assert!(bid_price > 100, EMIN_PRICE);
+        assert!(bid_price >= 100, EMIN_PRICE);
         let original_owner = get_nft_listing_original_owner(nft);
 
         coin::transfer<AptosCoin>(user, original_owner, bid_price );
@@ -144,12 +141,16 @@ module nft_tooling::market {
         let listing_price_2 = (listing_price * listing_price as u256);
         let probability_number_limit = bid_price_2_sf / listing_price_2;
         let random_number = randomness::u256_range(1, PROB_SF + 1);
+
+        debug::print(&utf8(b"Probabilistic buy random number:"));
+        debug::print(&random_number);
+
         // Assuming that the gas cost for each path is the same, so no undergasing attack. 
         if (random_number > probability_number_limit){
             // Lose Condition
             nft_listing_info = NftListingInfo{
                 original_owner: original_owner,
-                price: bid_price,
+                price: listing_price,
                 bought: false,
                 participant: caller_addr
             };
@@ -157,7 +158,7 @@ module nft_tooling::market {
             // Win Condition
             nft_listing_info = NftListingInfo{
                 original_owner: original_owner,
-                price: bid_price,
+                price: listing_price,
                 bought: true,
                 participant: caller_addr
             };
@@ -236,7 +237,7 @@ module nft_tooling::market {
    
 
     #[view]
-    fun get_app_signer_addr(): address {
+    public fun get_app_signer_addr(): address {
         object::create_object_address(&@nft_tooling, APP_SIGNER_CAPABILITY_SEED)
     }
 
@@ -247,7 +248,7 @@ module nft_tooling::market {
 
     // Testing functions
     #[test_only]
-    public fun initialize_for_test(creator: &signer) {
+    public fun initialize_for_testing(creator: &signer) {
         init_module(creator);
     }
 

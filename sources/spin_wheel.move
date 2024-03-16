@@ -213,7 +213,7 @@ module nft_tooling::spin_wheel {
 
     // Testing functions
     #[test_only]
-    public fun initialize_for_test(creator: &signer) {
+    public fun initialize_for_testing(creator: &signer) {
         init_module(creator);
     }
 

@@ -40,6 +40,9 @@ module nft_tooling::random_mint {
     #[test_only]
     friend nft_tooling::spin_wheel_test;
 
+    #[test_only]
+    friend nft_tooling::market_test;
+
     friend nft_tooling::spin_wheel;
 
     // Error Codes
@@ -333,7 +336,7 @@ module nft_tooling::random_mint {
         user: &signer,
         token_name: String, 
         token_description: String, token_uri: String, 
-    ): Object<NFTCapability> acquires ResourceCapability {
+    ): Object<Token> acquires ResourceCapability {
 
         let constructor_ref = token::create(
             &get_token_signer(),
@@ -435,7 +438,7 @@ module nft_tooling::random_mint {
     
     // Testing functions
     #[test_only]
-    public fun initialize_for_test(creator: &signer) {
+    public fun initialize_for_testing(creator: &signer) {
         init_module(creator);
     }
 
@@ -444,7 +447,7 @@ module nft_tooling::random_mint {
         user: &signer,
         token_name: String, 
         token_description: String, token_uri: String, 
-    ): Object<NFTCapability> acquires ResourceCapability {
+    ): Object<Token> acquires ResourceCapability {
         create_nft(user, token_name, token_description, token_uri)
 
     }

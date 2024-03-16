@@ -37,7 +37,7 @@ module nft_tooling::random_mint_test {
         randomness::set_seed(x"0000000000000000000000000000000000000000000000000000000000000001");
 
         random_mint::setup_coin(creator, u1, u2, fx);
-        random_mint::initialize_for_test(creator);
+        random_mint::initialize_for_testing(creator);
 
 
         let name1 = string::utf8(b"name1");
@@ -103,7 +103,7 @@ module nft_tooling::random_mint_test {
         randomness::set_seed(x"0000000000000000000000000000000000000000000000000000000000000001");
 
         random_mint::setup_coin(creator, u1, u2, fx);
-        random_mint::initialize_for_test(creator);
+        random_mint::initialize_for_testing(creator);
 
 
         let name1 = string::utf8(b"name1");

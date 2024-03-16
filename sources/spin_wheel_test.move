@@ -36,9 +36,9 @@ module nft_tooling::spin_wheel_test {
         randomness::set_seed(x"0000000000000000000000000000000000000000000000000000000000000001");
 
         random_mint::setup_coin(creator, u1, u2, fx);
-        random_mint::initialize_for_test(creator);
+        random_mint::initialize_for_testing(creator);
 
-        spin_wheel::initialize_for_test(creator);
+        spin_wheel::initialize_for_testing(creator);
 
         let name1 = string::utf8(b"name1");
         let description1 = string::utf8(b"description1");
