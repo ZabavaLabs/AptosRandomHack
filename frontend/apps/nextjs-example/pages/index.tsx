@@ -19,6 +19,7 @@ import { CONTRACT_ADDR, RANDOMNET_CLIENT, aptosClient } from "../utils";
 import { useEffect, useState } from "react";
 import Tabs from '../components/Tabs';
 import MintTab from "../components/panels/MintTab";
+import AdminTab from "../components/panels/AdminTab";
 
 const { Link } = Typography;
 
@@ -55,7 +56,7 @@ export default function App() {
   }, [connected])
 
   const tabs = [
-    { label: 'Admin', content: <MintTab /> },
+    { label: 'Admin', content: <AdminTab /> },
     { label: 'Mint', content: <MintTab /> },
     { label: 'Tab 2', content: (<div>H345</div>) },
     { label: 'Tab 3', content: (<div>Hello</div>) },
@@ -74,7 +75,7 @@ export default function App() {
 
 
         {tabs.map((tab, index) =>
-          index === activeTab ? <div key={index}>{tab.content}</div> : null
+          index === activeTab ? <div className="flex h-full w-full" key={index}>{tab.content}</div> : null
         )}
 
       </div>

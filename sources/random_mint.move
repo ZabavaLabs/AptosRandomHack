@@ -183,14 +183,9 @@ module nft_tooling::random_mint {
 
     public entry fun clear_nft_entries(
         account: &signer, 
-        name: String, 
-        description: String, 
-        uri: String,
-        weight: u64
         ) acquires NFTInfo {
 
         assert!(signer::address_of(account) == @nft_tooling ,ENOT_DEPLOYER);
-        assert!(weight > 0 , EWEIGHT_ZERO);
         let nft_info_table = &mut borrow_global_mut<NFTInfo>(nft_collection_address()).table;
         smart_table::clear(nft_info_table);
     }
@@ -433,7 +428,17 @@ module nft_tooling::random_mint {
        } else {
             false
        }
-      
+    } 
+
+    #[view]
+    public fun get_prize(user_addr: address): u64 acquires MintInfo {
+        let mint_info = borrow_global<MintInfo>(nft_collection_address());
+        let simple_map = mint_info.simple_map;
+        let contains_key = aptos_std::simple_map::contains_key(&simple_map, &user_addr);
+        assert!(contains_key, EUNABLE_TO_MINT);
+        let random_number: u64 = *aptos_std::simple_map::borrow(&simple_map, &user_addr);
+        random_number
+     
     } 
     
     // Testing functions

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { CONTRACT_ADDR, RANDOMNET_CLIENT } from '../../utils';
 import { InputViewRequestData, Network } from '@aptos-labs/ts-sdk';
 import { useAlert } from '../AlertProvider';
+import { genActionStyle } from 'antd/es/alert/style';
 
 
 const AdminTab: React.FC = () => {
@@ -12,19 +13,18 @@ const AdminTab: React.FC = () => {
 
 
     useEffect(() => {
-        getMintStatus()
-    }, [isMintable, connected])
+
+    }, [connected])
 
 
-    const handleMint = async () => {
-        console.log("handleMint1")
+    const handleAddNft = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         if (!account) return;
-        console.log("handleMint2")
         const transaction: InputTransactionData = {
             data: {
-                function: `${CONTRACT_ADDR}::random_mint::mint_nft`,
+                function: `${CONTRACT_ADDR}::random_mint::add_nft_entry`,
                 typeArguments: [],
-                functionArguments: [], // 1 is in Octas
+                functionArguments: [nameInputText, descriptionInputText, uriInputText, weightInputText],
             },
         };
         try {
@@ -38,13 +38,14 @@ const AdminTab: React.FC = () => {
         }
     }
 
-    const handleClaimPrize = async () => {
+    const handleClearNftEntries = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
         if (!account) return;
         const transaction: InputTransactionData = {
             data: {
-                function: `${CONTRACT_ADDR}::random_mint::claim_nft_from_map`,
+                function: `${CONTRACT_ADDR}::random_mint::clear_nft_entries`,
                 typeArguments: [],
-                functionArguments: [], // 1 is in Octas
+                functionArguments: [],
             },
         };
         try {
@@ -59,42 +60,70 @@ const AdminTab: React.FC = () => {
     }
 
 
-    const getMintStatus = async () => {
-        if (!account) {
-            setIsMintable(true)
-            return
-        };
-        const payload: InputViewRequestData = {
-            function: `${CONTRACT_ADDR}::random_mint::able_to_mint`,
-            typeArguments: [],
-            functionArguments: [account?.address!],
-        };
 
-        const response = await RANDOMNET_CLIENT.view({ payload: payload });
-        console.log(`response: ${response}`)
-        setIsMintable(response[0])
-    }
+    const [nameInputText, setNameInputText] = useState('');
+    const [descriptionInputText, setDescriptionInputText] = useState('');
+    const [uriInputText, setUriInputText] = useState('');
+    const [weightInputText, setWeightInputText] = useState();
 
+    // Event handler to update the input text
+    const handleNameInputChange = (event: any) => {
+        setNameInputText(event.target.value);
+    };
+    const handleDescriptionInputChange = (event: any) => {
+        setDescriptionInputText(event.target.value);
+    };
+    const handleUriInputChange = (event: any) => {
+        setUriInputText(event.target.value);
+    };
+    const handleWeightInputChange = (event: any) => {
+        setWeightInputText(event.target.value);
+    };
     return (
-        <section className="flex h-full w-full justify-center items-center">
-
-            <div className="flex flex-col  2xl:w-1/2 md:w-2/3 w-full rounded-lg h-full max-w-xl justify-center items-center mx-4">
-                <div className="bg-slate-950 sm:w-96 w-full my-8 h-96 text-white">MintBox</div>
-                <div className="flex justify-center items-center bg-slate-950 sm:w-96 w-full py-6 rounded-lg">
-
-                    {
-                        isMintable && <button onClick={handleMint} className=" text-white bg-purple-600 w-1/2 h-16 rounded-lg">
-                            Mint
-                        </button>
-                    }
-                    {
-                        !isMintable && <button onClick={handleClaimPrize} className="text-white bg-pink-600 w-1/2 h-16 rounded-lg">
-                            Claim Prize
-                        </button>
-                    }
-                </div>
-
+        <section className="flex flex-col h-full w-full items-center">
+            <div className="flex flex-col max-w-7xl w-full p-8 bg-slate-950 rounded-lg">
+                <h2 className="text-white mb-4 text-2xl">Add NFT to lootbox</h2>
+                <form className="flex flex-col " action='N'>
+                    <input
+                        className="py-2 px-6 my-4 rounded-full"
+                        type="text"
+                        value={nameInputText}
+                        onChange={handleNameInputChange}
+                        placeholder='NFT Name'
+                    />
+                    <input
+                        className="py-2 px-6 my-4 rounded-full"
+                        type="text"
+                        value={descriptionInputText}
+                        onChange={handleDescriptionInputChange}
+                        placeholder='NFT Description'
+                    />
+                    <input
+                        className="py-2 px-6 my-4 rounded-full"
+                        type="text"
+                        value={uriInputText}
+                        onChange={handleUriInputChange}
+                        placeholder='ipfs://'
+                    />
+                    <input
+                        className="py-2 px-6 my-4 rounded-full"
+                        type="text"
+                        value={weightInputText}
+                        onChange={handleWeightInputChange}
+                        placeholder='Probability weight'
+                    />
+                    <button onClick={handleAddNft} className=" text-white bg-blue-600 w-96 h-12 mt-4 rounded-full">
+                        Add
+                    </button>
+                    <button onClick={handleClearNftEntries} className=" text-white bg-red-400 w-96 h-12 mt-4 rounded-full">
+                        Clear Entries
+                    </button>
+                </form>
             </div>
+            <div className="flex flex-col max-w-7xl w-full p-8 bg-slate-950 rounded-lg mt-8">
+                <h2 className="text-white mb-4 text-2xl">Table</h2>
+            </div>
+
         </section>
     );
 };
