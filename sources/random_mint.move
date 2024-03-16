@@ -477,4 +477,32 @@ module nft_tooling::random_mint {
 
     }
 
+
+    #[test_only]
+    public fun setup_coin_4(creator:&signer, user1:&signer, user2:&signer, user3:&signer, user4:&signer, aptos_framework: &signer){
+        use aptos_framework::account::create_account_for_test;
+        create_account_for_test(signer::address_of(creator));
+        create_account_for_test(signer::address_of(user1));
+        create_account_for_test(signer::address_of(user2));
+        create_account_for_test(signer::address_of(user3));
+        create_account_for_test(signer::address_of(user4));
+
+        let (burn_cap, mint_cap) = aptos_framework::aptos_coin::initialize_for_test(aptos_framework);
+        coin::register<AptosCoin>(creator);
+        coin::register<AptosCoin>(user1);
+        coin::register<AptosCoin>(user2);
+        coin::register<AptosCoin>(user3);
+        coin::register<AptosCoin>(user4);
+
+        coin::deposit(signer::address_of(creator), coin::mint(100_00_000_000, &mint_cap));
+        coin::deposit(signer::address_of(user1), coin::mint(100_00_000_000, &mint_cap));
+        coin::deposit(signer::address_of(user2), coin::mint(100_00_000_000, &mint_cap));
+        coin::deposit(signer::address_of(user3), coin::mint(100_00_000_000, &mint_cap));
+        coin::deposit(signer::address_of(user4), coin::mint(100_00_000_000, &mint_cap));
+
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+
+    }
 }
