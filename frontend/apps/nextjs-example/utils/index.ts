@@ -21,3 +21,4 @@ export const RANDOMNET_CONFIG = new AptosConfig({ network: Network.RANDOMNET });
 export const RANDOMNET_CLIENT = new Aptos(RANDOMNET_CONFIG);
 
 export const CONTRACT_ADDR = "0x9084c7d75d142f42546c3639379567da80bfb81ab1e3c0459bbfa45d0564ec9f";
+export const APP_SIGNER_CONTRACT_ADDR = "0x8ed6b0e9ffccba54d08817db8caf2cd0daa5afc27447b97574b587c8f77325c6";

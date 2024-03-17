@@ -65,7 +65,8 @@ const ListTab: React.FC = () => {
             <div className="flex flex-row  w-full rounded-lg h-full max-w-4xl justify-center p-4 mx-4 bg-blue-950">
                 <div className="bg-slate-950 w-1/2  h-96 text-white justify-center items-center flex mx-4">
 
-                    {
+                    {selectedToken != undefined &&
+
                         < MediaRenderer
                             src={`${selectedToken?.tokenUri}`}
                             alt="Selected NFT Image"

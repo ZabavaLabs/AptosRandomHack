@@ -92,7 +92,6 @@ module nft_tooling::market {
         let caller_addr = signer::address_of(user);
         assert!(object::is_owner(nft, caller_addr), ENOT_OWNER);
         assert!(price >= 100, EMIN_PRICE);
-        // TODO:Send Object
         object::transfer(user, nft, get_app_signer_addr());
         let nft_addr = object::object_address(&nft);
         
@@ -110,7 +109,6 @@ module nft_tooling::market {
         let caller_addr = signer::address_of(user);
         assert!(able_to_buy_nft(nft), EINVALID_BUY_STATE);
         assert!(get_nft_listing_original_owner(nft) == caller_addr, ENOT_OWNER);
-        // TODO:Send Object back to owner
         object::transfer(&get_app_signer(), nft, caller_addr);
         
 
@@ -232,7 +230,12 @@ module nft_tooling::market {
         nft_listing_info.participant
     } 
 
-   
+    #[view]
+    public fun get_listed_nfts(): vector<address> acquires NftListingMap {
+        let nft_map = borrow_global<NftListingMap>(@nft_tooling);
+        let simple_map = nft_map.simple_map;
+        aptos_std::simple_map::keys(&simple_map) 
+    }
 
     #[view]
     public fun get_app_signer_addr(): address {
@@ -243,6 +246,8 @@ module nft_tooling::market {
     fun get_app_signer(): signer acquires ObjectController {
         object::generate_signer_for_extending(&borrow_global<ObjectController>(get_app_signer_addr()).app_extend_ref)
     }
+
+
 
     // Testing functions
     #[test_only]

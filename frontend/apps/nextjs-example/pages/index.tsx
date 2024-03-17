@@ -21,6 +21,7 @@ import Tabs from '../components/Tabs';
 import MintTab from "../components/panels/MintTab";
 import AdminTab from "../components/panels/AdminTab";
 import ListTab from "../components/panels/ListTab";
+import BuyTab from "../components/panels/BuyTab";
 
 const { Link } = Typography;
 
@@ -60,7 +61,7 @@ export default function App() {
     { label: 'Admin', content: <AdminTab /> },
     { label: 'Mint', content: <MintTab /> },
     { label: 'List', content: <ListTab /> },
-    { label: 'Tab 3', content: (<div>Hello</div>) },
+    { label: 'Buy', content: <BuyTab /> },
   ];
   const [activeTab, setActiveTab] = useState<number>(1);
   return (

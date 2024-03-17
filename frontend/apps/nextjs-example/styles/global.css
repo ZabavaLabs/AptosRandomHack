@@ -6,3 +6,8 @@
 .overflow-wrap-break {
     overflow-wrap: break-word;
 }
+
+.translucent-background {
+    background-color: rgba(125, 125, 125, 0.1);
+    /* Black color with 50% opacity */
+}
