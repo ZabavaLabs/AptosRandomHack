@@ -438,7 +438,37 @@ module nft_tooling::random_mint {
         assert!(contains_key, EUNABLE_TO_MINT);
         let random_number: u64 = *aptos_std::simple_map::borrow(&simple_map, &user_addr);
         random_number
-     
+    }
+    
+    #[view]
+    public fun get_prize_info(user_addr: address): NFTInfoEntry acquires MintInfo, NFTInfo {
+        let mint_info = borrow_global<MintInfo>(nft_collection_address());
+        let simple_map = mint_info.simple_map;
+        let contains_key = aptos_std::simple_map::contains_key(&simple_map, &user_addr);
+        assert!(contains_key, EUNABLE_TO_MINT);
+        let random_number: u64 = *aptos_std::simple_map::borrow(&simple_map, &user_addr);
+        // random_number
+
+        let table_length = get_nft_table_length();
+
+        let i: u64 = 0;
+        let sum: u64 = 0;
+        let nft_id: u64 = 0;
+        let next_sum: u64 = 0;
+        while (i < table_length) {
+            let current_weight = get_nft_info_entry(i).weight;
+            next_sum = sum + current_weight;
+            if (random_number >= sum && random_number < next_sum) {
+                nft_id = i;
+                assert!(nft_id_exists(nft_id), ENFT_ID_NOT_FOUND);
+                let nft_info_entry = get_nft_info_entry(nft_id);        
+                break
+            };
+            sum = next_sum;
+            i = i + 1;
+        };
+        let nft_info_entry = get_nft_info_entry(nft_id);     
+        nft_info_entry
     } 
     
     // Testing functions

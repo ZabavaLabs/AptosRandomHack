@@ -93,7 +93,7 @@ const ListTab: React.FC = () => {
                 </div>
 
             </div>
-            <h1 className='text-2xl text-white m-4'>
+            <h1 className='text-3xl text-white m-4 mt-12'>
                 My NFTs
             </h1>
             <div className="grid grid-cols-3 gap-4 bg-slate-950 w-full h-full py-6 rounded-lg p-4">

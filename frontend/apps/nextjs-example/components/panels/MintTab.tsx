@@ -15,6 +15,7 @@ const MintTab: React.FC = () => {
 
     useEffect(() => {
         getMintStatus()
+        getPrizeInfo()
     }, [isMintable, connected])
 
 
@@ -35,7 +36,7 @@ const MintTab: React.FC = () => {
             });
             setSuccessAlertHash(response.hash, Network.RANDOMNET);
             getMintStatus();
-            getPrize();
+            getPrizeInfo();
         } catch (error) {
             console.error(error);
         }
@@ -57,7 +58,7 @@ const MintTab: React.FC = () => {
             });
             setSuccessAlertHash(response.hash, Network.RANDOMNET);
             getMintStatus();
-            getPrize();
+            getPrizeInfo();
 
         } catch (error) {
             console.error(error);
@@ -85,20 +86,16 @@ const MintTab: React.FC = () => {
         }
     }
 
-    const getPrize = async () => {
-        if (!account) {
-            setIsMintable(true)
-            return
-        };
+    const getPrizeInfo = async () => {
         const payload: InputViewRequestData = {
-            function: `${CONTRACT_ADDR}::random_mint::get_prize`,
+            function: `${CONTRACT_ADDR}::random_mint::get_prize_info`,
             typeArguments: [],
             functionArguments: [account?.address!],
         };
         try {
             const response = await RANDOMNET_CLIENT.view({ payload: payload });
-            // console.log(`response: ${response}`)
-            setPrizeCid(response[0])
+            console.log(`getPrizeCid: ${JSON.stringify(response[0])}`)
+            setPrizeCid(response[0]?.uri)
         } catch (e) {
             console.log("Error", e)
         }
@@ -113,7 +110,7 @@ const MintTab: React.FC = () => {
                     }
                     {!isMintable &&
                         < MediaRenderer
-                            src="ipfs://bafybeibygun6pbfe4iajsf3b4bpiqxsxhedzpevkzktxziwlupxg4evhgu"
+                            src={`${prizeCid}`}
                             alt="Prize Image"
                             className='flex h-auto w-40'
                         />
