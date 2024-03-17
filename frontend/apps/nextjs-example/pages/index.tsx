@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import Tabs from '../components/Tabs';
 import MintTab from "../components/panels/MintTab";
 import AdminTab from "../components/panels/AdminTab";
+import ListTab from "../components/panels/ListTab";
 
 const { Link } = Typography;
 
@@ -58,12 +59,12 @@ export default function App() {
   const tabs = [
     { label: 'Admin', content: <AdminTab /> },
     { label: 'Mint', content: <MintTab /> },
-    { label: 'Tab 2', content: (<div>H345</div>) },
+    { label: 'List', content: <ListTab /> },
     { label: 'Tab 3', content: (<div>Hello</div>) },
   ];
   const [activeTab, setActiveTab] = useState<number>(1);
   return (
-    <div className="flex flex-col h-screen bg-slate-900">
+    <div className="flex flex-col h-full min-h-screen bg-slate-900">
       <nav className="flex flex-row w-full bg-slate-950 py-4 px-4 justify-end h-20">
         <WalletConnector />
 
@@ -73,11 +74,11 @@ export default function App() {
           <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 
-
-        {tabs.map((tab, index) =>
-          index === activeTab ? <div className="flex h-full w-full" key={index}>{tab.content}</div> : null
-        )}
-
+        <div>
+          {tabs.map((tab, index) =>
+            index === activeTab ? <div className="flex h-full w-full" key={index}>{tab.content}</div> : null
+          )}
+        </div>
       </div>
     </div>
   );

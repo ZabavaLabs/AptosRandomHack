@@ -31,6 +31,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "@thirdweb-dev/react": "^4.4.20",
     "gh-pages": "^4.0.0"
   },
   "packageManager": "pnpm@7.14.2"

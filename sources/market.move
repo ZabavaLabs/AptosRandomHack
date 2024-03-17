@@ -85,8 +85,6 @@ module nft_tooling::market {
             simple_map: simple_map,
         };
         move_to(deployer, nft_map);
-
-
     }
 
     // List NFT.
