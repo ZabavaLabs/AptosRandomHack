@@ -6,5 +6,5 @@ COPY . ./
 
 RUN pnpm install
 RUN pnpm run build
-EXPOSE 4000
-CMD ["pnpm", "run","dev"]
+EXPOSE 8080
+CMD ["pnpm", "run", "dev"]
