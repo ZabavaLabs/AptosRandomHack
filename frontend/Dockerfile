@@ -7,8 +7,6 @@ RUN pnpm install
 
 WORKDIR /apps/nextjs-example
 
-RUN pnpm run build
-
 EXPOSE 8080
 
 CMD ["pnpm", "run", "start"]
