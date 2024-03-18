@@ -1,5 +1,5 @@
 import { AccountAddress, AccountAuthenticator, AnyRawTransaction } from "@aptos-labs/ts-sdk";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useWallet } from "../../../../packages/wallet-adapter-react";
 import { useState, useEffect } from "react";
 import { aptosClient } from "../../utils";
 import { useAlert } from "../AlertProvider";

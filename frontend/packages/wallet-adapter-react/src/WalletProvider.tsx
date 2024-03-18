@@ -22,8 +22,8 @@ import type {
   WalletName,
   Types,
   InputTransactionData,
-} from "@aptos-labs/wallet-adapter-core";
-import { WalletCore } from "@aptos-labs/wallet-adapter-core";
+} from "../../wallet-adapter-core";
+import { WalletCore } from "../../wallet-adapter-core";
 
 export interface AptosWalletProviderProps {
   children: ReactNode;

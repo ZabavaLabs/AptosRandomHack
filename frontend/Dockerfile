@@ -17,4 +17,4 @@ RUN pnpm build
 
 RUN pnpm export
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "start"]

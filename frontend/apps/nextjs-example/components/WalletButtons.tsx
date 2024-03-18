@@ -4,7 +4,7 @@ import {
   Wallet,
   isRedirectable,
   WalletName,
-} from "@aptos-labs/wallet-adapter-react";
+} from "../../../packages/wallet-adapter-react";
 import { useAlert } from "./AlertProvider";
 
 const WalletButtons = () => {
@@ -73,9 +73,8 @@ const WalletView = (wallet: Wallet) => {
     // we are on desktop view
     return (
       <button
-        className={`bg-blue-500  text-white font-bold py-2 px-4 rounded mr-4 ${
-          isWalletReady ? "hover:bg-blue-700" : "opacity-50 cursor-not-allowed"
-        }`}
+        className={`bg-blue-500  text-white font-bold py-2 px-4 rounded mr-4 ${isWalletReady ? "hover:bg-blue-700" : "opacity-50 cursor-not-allowed"
+          }`}
         disabled={!isWalletReady}
         key={wallet.name}
         onClick={() => onWalletConnectRequest(wallet.name)}

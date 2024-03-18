@@ -18,7 +18,7 @@ import {
   Wallet,
   WalletReadyState,
   WalletName,
-} from "@aptos-labs/wallet-adapter-react";
+} from "../../../packages/wallet-adapter-react";
 import { grey } from "./aptosColorPalette";
 // reported bug with loading mui icons with esm, therefore need to import like this https://github.com/mui/material-ui/issues/35233
 import { LanOutlined as LanOutlinedIcon } from "@mui/icons-material";

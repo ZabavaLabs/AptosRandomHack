@@ -13,7 +13,7 @@ import {
   AccountAuthenticator,
   Types,
   WalletName,
-} from "@aptos-labs/wallet-adapter-core";
+} from "../../wallet-adapter-core";
 import { createContext, useContext } from "react";
 
 export interface WalletContextState {

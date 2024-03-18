@@ -5,7 +5,7 @@ export type {
   Wallet,
   WalletName,
   InputTransactionData,
-} from "@aptos-labs/wallet-adapter-core";
+} from "../../../packages/wallet-adapter-core";
 
 export {
   WalletReadyState,
@@ -13,4 +13,4 @@ export {
   isInAppBrowser,
   isMobile,
   isRedirectable,
-} from "@aptos-labs/wallet-adapter-core";
+} from "../../../packages/wallet-adapter-core";

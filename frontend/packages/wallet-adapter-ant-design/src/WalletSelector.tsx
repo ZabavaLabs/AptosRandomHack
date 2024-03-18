@@ -6,7 +6,7 @@ import {
   Wallet,
   WalletReadyState,
   WalletName,
-} from "@aptos-labs/wallet-adapter-react";
+} from "../../../packages/wallet-adapter-react";
 import "./styles.css";
 import { truncateAddress } from "./utils";
 const { Text } = Typography;
@@ -125,7 +125,7 @@ const walletView = (
         key={wallet.name}
         onClick={
           wallet.readyState === WalletReadyState.Installed ||
-          wallet.readyState === WalletReadyState.Loadable
+            wallet.readyState === WalletReadyState.Loadable
             ? () => onWalletSelected(wallet.name)
             : () => window.open(wallet.url)
         }
@@ -136,7 +136,7 @@ const walletView = (
             <Text className="wallet-selector-text">{wallet.name}</Text>
           </div>
           {wallet.readyState === WalletReadyState.Installed ||
-          wallet.readyState === WalletReadyState.Loadable ? (
+            wallet.readyState === WalletReadyState.Loadable ? (
             <Button className="wallet-connect-button">
               <Text className="wallet-connect-button-text">Connect</Text>
             </Button>
