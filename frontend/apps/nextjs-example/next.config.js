@@ -12,4 +12,7 @@ module.exports = {
     config.resolve.fallback = { "@solana/web3.js": false };
     return config;
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 };

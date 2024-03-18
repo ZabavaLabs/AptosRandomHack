@@ -19,11 +19,13 @@
     "publish-packages": "changeset version && changeset publish",
     "example:export": "pnpm run --filter {apps/nextjs-example} export",
     "example:build": "pnpm run --filter {apps/nextjs-example} build",
-    "deploy:example": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll && gh-pages --dist apps/nextjs-example/out --dotfiles"
+    "deploy:example": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll && gh-pages --dist apps/nextjs-example/out --dotfiles",
+    "start": "pnpm run example:build && next start"
   },
   "devDependencies": {
     "@aptos-labs/eslint-config-adapter": "workspace:*",
     "@changesets/cli": "^2.22.0",
+    "next": "^14.1.3",
     "prettier": "latest",
     "turbo": "latest"
   },

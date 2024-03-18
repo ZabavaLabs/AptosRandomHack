@@ -110,8 +110,11 @@ const AdminTab: React.FC = () => {
     }
 
     const updateTable = async () => {
-        const tableLength = await getNftTableLength()
+        let tableLength = await getNftTableLength()
         const fetchedResults = [];
+        if (tableLength == null || tableLength == undefined) {
+            tableLength = 0
+        }
         for (let i = 0; i < tableLength; i++) {
             const result = await getNftInfoEntry(i)
             fetchedResults.push(result)
