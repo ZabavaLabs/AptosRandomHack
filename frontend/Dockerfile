@@ -1,9 +1,8 @@
-FROM node:16-buster
-RUN mkdir /app
-COPY package.json /app/
+FROM node:20-alpine
 WORKDIR /app
 COPY . ./
 
+RUN npm install -g pnpm
 RUN pnpm install
 RUN pnpm run build
 EXPOSE 8080
