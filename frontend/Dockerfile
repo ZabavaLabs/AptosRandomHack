@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-# WORKDIR /project
+WORKDIR /project
 
 COPY . ./
 
@@ -9,8 +9,12 @@ RUN pnpm install
 
 EXPOSE 8080
 
-RUN pnpm run my-deploy
+# RUN pnpm run my-deploy
 
-# WORKDIR /project/apps/nextjs-example
+WORKDIR /project/apps/nextjs-example
 
-# CMD ["pnpm", "run", "start"]
+RUN pnpm build
+
+RUN pnpm export
+
+CMD ["pnpm", "start"]
