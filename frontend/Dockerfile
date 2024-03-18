@@ -7,4 +7,8 @@ RUN pnpm install
 
 EXPOSE 8080
 
-CMD ["pnpm", "run", "deploy:example"]
+RUN pnpm run my-deploy
+
+WORKDIR /apps/nextjs-example/
+
+CMD ["pnpm", "run", "start"]

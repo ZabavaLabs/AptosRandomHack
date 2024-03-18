@@ -20,6 +20,7 @@
     "example:export": "pnpm run --filter {apps/nextjs-example} export",
     "example:build": "pnpm run --filter {apps/nextjs-example} build",
     "deploy:example": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll && gh-pages --dist apps/nextjs-example/out --dotfiles",
+    "my-deploy": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll",
     "start": "pnpm run example:build && next start"
   },
   "devDependencies": {
