@@ -4,7 +4,6 @@ COPY . ./
 
 RUN npm install -g pnpm
 RUN pnpm install
-RUN pnpm deploy:example
 
 WORKDIR /apps/nextjs-example
 RUN pnpm install
