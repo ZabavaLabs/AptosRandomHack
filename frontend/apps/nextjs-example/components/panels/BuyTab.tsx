@@ -64,6 +64,8 @@ const BuyTab: React.FC = () => {
             setSuccessAlertHash(response.hash, Network.RANDOMNET);
             getContractOwnedTokens();
             getListedNFTDetails(selectedToken?.tokenAddress)
+            setSubmittedBuy(false)
+            setSelectedToken(undefined)
         } catch (error) {
             console.error(error);
         }
@@ -98,7 +100,7 @@ const BuyTab: React.FC = () => {
         };
         const ownedTokens = await RANDOMNET_CLIENT.getAccountOwnedTokens({ accountAddress: APP_SIGNER_CONTRACT_ADDR });
         setTokenArray(ownedTokens)
-        console.log("ownedTokens", JSON.stringify(ownedTokens));
+        console.log("contractOwnedTokens", JSON.stringify(ownedTokens));
     }
 
 
@@ -114,6 +116,7 @@ const BuyTab: React.FC = () => {
             setListedNft(response[0])
             console.log(`ListedNFTDetails response: ${JSON.stringify(response)}`)
         } catch (e) {
+            setListedNft(null)
             console.log("Error", e)
         }
     }
@@ -158,18 +161,18 @@ const BuyTab: React.FC = () => {
                     <p className="w-full text-center text-4xl text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(2)}%</p>
                     {submittedBuy && <p className="text-yellow-400 text-center text-xl my-4">{won ? "Congratulations, You Won!" : "It's not your lucky day! Try again."}</p>}
                     <div className="flex justify-center mt-8 flex-col">
-                        <input
-                            className="py-2 px-6 my-4 rounded-full"
-                            type="text"
-                            value={priceInputText}
-                            onChange={handlePriceInputChange}
-                            placeholder='Bidding Price (Octa)'
-                        />
-                        {!listedNft?.bought &&
 
-                            <button className="text-white text-xl bg-pink-600 w-full h-20 mt-4 rounded-xl" onClick={handleBuy}>
-                                Buy NFT
-                            </button>
+                        {!listedNft?.bought &&
+                            (<>       <input
+                                className="py-2 px-6 my-4 rounded-full"
+                                type="text"
+                                value={priceInputText}
+                                onChange={handlePriceInputChange}
+                                placeholder='Bidding Price (Octa)'
+                            />
+                                <button className="text-white text-xl bg-pink-600 w-full h-20 mt-4 rounded-xl" onClick={handleBuy}>
+                                    Buy NFT
+                                </button></>)
                         }
                         {won &&
                             <button className="text-white text-xl bg-purple-600 w-full h-20 mt-4 rounded-xl" onClick={handleClaimPrize}>
