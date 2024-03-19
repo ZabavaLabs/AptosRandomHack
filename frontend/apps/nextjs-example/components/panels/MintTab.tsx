@@ -11,8 +11,6 @@ const MintTab: React.FC = () => {
     const [isMintable, setIsMintable] = useState(true);
     const [prizeCid, setPrizeCid] = useState("");
 
-
-
     useEffect(() => {
         getMintStatus()
         getPrizeInfo()
@@ -22,6 +20,7 @@ const MintTab: React.FC = () => {
     const handleMint = async () => {
         console.log("handleMint1")
         if (!connected) return;
+
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::mint_nft`,
@@ -105,8 +104,10 @@ const MintTab: React.FC = () => {
             const response = await RANDOMNET_CLIENT.view({ payload: payload });
             console.log(`getPrizeCid: ${JSON.stringify(response[0])}`)
             setPrizeCid(response[0]?.uri)
+
         } catch (e) {
             console.log("Error", e)
+
         }
     }
 
