@@ -1,4 +1,7 @@
-const isProd = process.env.NODE_ENV === "production";
+// const isProd = process.env.NODE_ENV === "production";
+// Have to set false otherwise pnpm start doesn't work
+const isProd = false;
+
 
 module.exports = {
   reactStrictMode: true,
