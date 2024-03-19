@@ -1,6 +1,6 @@
 import { Avatar, Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { useWallet } from "../../wallet-adapter-react";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import WalletMenu from "./WalletMenu";
 import React from "react";
 import { truncateAddress } from "./utils";

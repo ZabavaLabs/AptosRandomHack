@@ -1,5 +1,5 @@
-import { useWallet } from "../../../packages/wallet-adapter-react";
-import { WalletConnector } from "../../../packages/wallet-adapter-mui-design";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { WalletConnector } from "@aptos-labs/wallet-adapter-mui-design";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useAutoConnect } from "../components/AutoConnectProvider";

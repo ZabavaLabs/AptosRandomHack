@@ -6,7 +6,7 @@ import {
   Popover,
   Tooltip,
 } from "@mui/material";
-import { useWallet } from "../../../packages/wallet-adapter-react";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import React, { useState } from "react";
 
 type WalletMenuProps = {

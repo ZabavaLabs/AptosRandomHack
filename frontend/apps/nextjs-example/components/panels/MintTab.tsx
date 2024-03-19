@@ -1,4 +1,4 @@
-import { InputTransactionData, useWallet } from '../../../../packages/wallet-adapter-react';
+import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 import React, { useEffect, useState } from 'react';
 import { CONTRACT_ADDR, RANDOMNET_CLIENT } from '../../utils';
 import { InputViewRequestData, Network } from '@aptos-labs/ts-sdk';

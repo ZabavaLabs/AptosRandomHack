@@ -2,7 +2,7 @@ import { parseTypeTag, AccountAddress, U64 } from "@aptos-labs/ts-sdk";
 import {
   useWallet,
   InputTransactionData,
-} from "../../../../packages/wallet-adapter-react";
+} from "@aptos-labs/wallet-adapter-react";
 
 import { aptosClient } from "../../utils";
 import { useAlert } from "../AlertProvider";

@@ -4,7 +4,7 @@ import {
   Wallet,
   isRedirectable,
   WalletName,
-} from "../../../packages/wallet-adapter-react";
+} from "@aptos-labs/wallet-adapter-react";
 import { useAlert } from "./AlertProvider";
 
 const WalletButtons = () => {

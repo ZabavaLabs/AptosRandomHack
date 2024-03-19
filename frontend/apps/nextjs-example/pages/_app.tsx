@@ -3,7 +3,7 @@ import { AppContext } from "../components/AppContext";
 import { ThirdwebSDKProvider } from "@thirdweb-dev/react";
 // order matters
 import "../styles/global.css";
-import "../../../packages/wallet-adapter-ant-design/dist/index.css"
+import "@aptos-labs/wallet-adapter-ant-design/dist/index.css"
 
 
 function MyApp({ Component, pageProps }: AppProps) {

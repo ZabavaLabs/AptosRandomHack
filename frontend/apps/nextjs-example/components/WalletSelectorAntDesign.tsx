@@ -1,4 +1,4 @@
-import { WalletSelector } from "../../../packages/wallet-adapter-ant-design";
+import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 
 const WalletSelectorAntDesign = () => {
   return <WalletSelector />;

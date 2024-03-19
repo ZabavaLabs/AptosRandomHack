@@ -18,7 +18,7 @@ import { OnekeyWallet } from "@onekeyfe/aptos-wallet-adapter";
 import {
   AptosWalletAdapterProvider,
   NetworkName,
-} from "../../../packages/wallet-adapter-react";
+} from "@aptos-labs/wallet-adapter-react";
 import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 import { FC, ReactNode } from "react";
 import face from "../lib/faceInitialization";
