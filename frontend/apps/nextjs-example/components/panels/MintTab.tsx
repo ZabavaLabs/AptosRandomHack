@@ -115,7 +115,7 @@ const MintTab: React.FC = () => {
         <section className="flex h-full w-full justify-center items-center">
 
             <div className="flex flex-col  2xl:w-1/2 md:w-2/3 w-full rounded-lg h-full max-w-xl justify-center items-center mx-4">
-                <div className="bg-slate-950 sm:w-96 w-full my-8 h-96 text-white justify-center items-center flex">
+                <div className="menu-background-color rounded-lg sm:w-96 w-full my-8 h-96 text-white justify-center items-center flex">
                     {isMintable && <img className="w-32 h-32 absolute aspect-square" src="question-mark-icon.png" alt="Question Mark" />
                     }
                     {!isMintable &&
@@ -127,15 +127,15 @@ const MintTab: React.FC = () => {
                     }
                     {/* <img className="w-56 h-56" src="https://ipfs.io/ipfs/bafybeibygun6pbfe4iajsf3b4bpiqxsxhedzpevkzktxziwlupxg4evhgu"></img> */}
                 </div>
-                <div className="flex justify-center items-center bg-slate-950 sm:w-96 w-full py-6 rounded-lg">
+                <div className="flex justify-center items-center menu-background-color sm:w-96 w-full p-12 rounded-lg">
 
                     {
-                        isMintable && <button onClick={handleMint} className=" text-white bg-purple-600 w-1/2 h-16 rounded-lg">
+                        isMintable && <button onClick={handleMint} className=" text-white bg-purple-600  font-semibold w-full h-16 text-lg rounded-lg">
                             Mint
                         </button>
                     }
                     {
-                        !isMintable && <button onClick={handleClaimPrize} className="text-white bg-pink-600 w-1/2 h-16 rounded-lg">
+                        !isMintable && <button onClick={handleClaimPrize} className="text-white button-background-color font-semibold w-full h-16 text-xl rounded-lg">
                             Claim Prize
                         </button>
                     }

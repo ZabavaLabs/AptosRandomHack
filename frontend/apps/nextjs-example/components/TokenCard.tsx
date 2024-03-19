@@ -11,7 +11,7 @@ export default function TokenCard(props: {
   return (
     <button
       onClick={() => clickCallback({ tokenAddress, tokenUri, tokenName })}
-      className="flex flex-col items-center justify-center w-full h-auto rounded-lg translucent-background flex-wrap p-4 focus:bg-blue-900">
+      className="flex flex-col items-center justify-center w-full h-auto rounded-lg translucent-background flex-wrap p-8 focus:bg-gray-900">
       < MediaRenderer
         src={`${tokenUri}`}
         alt="Token Image"

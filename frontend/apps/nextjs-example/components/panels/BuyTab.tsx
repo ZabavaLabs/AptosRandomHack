@@ -11,7 +11,7 @@ const BuyTab: React.FC = () => {
     const { setSuccessAlertMessage, setSuccessAlertHash } = useAlert();
 
     const [tokenArray, setTokenArray] = useState([])
-    const [selectedToken, setSelectedToken] = useState()
+    const [selectedToken, setSelectedToken] = useState(undefined)
     const [listedNft, setListedNft] = useState()
     const [priceInputText, setPriceInputText] = useState(100);
     const [submittedBuy, setSubmittedBuy] = useState(false);
@@ -141,48 +141,51 @@ const BuyTab: React.FC = () => {
     return (
         <section className="flex h-full w-full justify-center items-center flex-col">
 
-            <div className="flex flex-row max-w-4xl w-full rounded-lg h-full justify-center p-12 mx-4 bg-blue-950">
-                <div className="bg-slate-950 w-1/2   text-white justify-center items-center flex mx-4 p-4">
+            <div className="flex flex-row max-w-4xl w-full rounded-lg h-full justify-center p-12 mx-4 menu-background-color">
+                <div className="page-background-color w-96 h-96 rounded-lg  text-white justify-center items-center flex mx-4 ">
 
                     {selectedToken != undefined &&
                         < MediaRenderer
                             src={`${selectedToken?.tokenUri}`}
                             alt="Selected NFT Image"
-                            className='flex h-auto '
+                            className='flex h-40 w-40'
                         />
                     }
                     {/* {selectedToken == undefined && <img className="w-40 h-40" src="question-mark-icon.png" />} */}
                 </div>
-                <div className="w-1/2 flex flex-col mx-4">
-                    <h2 className="w-full text-center text-4xl text-white mb-8">Selected NFT</h2>
-                    <h3 className="w-full text-center text-2xl text-white mb-8">Listing Price: {listedNft?.price}</h3>
+                <div className="w-96 flex flex-col mx-4">
+                    <h2 className="w-full text-center text-3xl text-white mb-8 font-bold">Selected NFT</h2>
+                    <h3 className="w-full text-center  text-white mb-2">Listing Price: {listedNft?.price}</h3>
                     <p className="w-full text-center text-white mb-2">Token Name: {selectedToken?.tokenName}</p>
                     <p className="w-full text-center text-white overflow-hidden mb-2">Token Address: {selectedToken?.tokenAddress}</p>
-                    <p className="w-full text-center text-4xl text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(2)}%</p>
+                    <p className="w-full text-center text-2xl font-medium text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(2)}%</p>
                     {submittedBuy && <p className="text-yellow-400 text-center text-xl my-4">{won ? "Congratulations, You Won!" : "It's not your lucky day! Try again."}</p>}
                     <div className="flex justify-center mt-8 flex-col">
 
                         {!listedNft?.bought &&
-                            (<>       <input
-                                className="py-2 px-6 my-4 rounded-full"
-                                type="text"
-                                value={priceInputText}
-                                onChange={handlePriceInputChange}
-                                placeholder='Bidding Price (Octa)'
-                            />
-                                <button className="text-white text-xl bg-pink-600 w-full h-20 mt-4 rounded-xl" onClick={handleBuy}>
+                            (<>
+                                <input
+                                    className="py-3 px-6 my-4 rounded-full"
+                                    type="text"
+                                    value={priceInputText}
+                                    onChange={handlePriceInputChange}
+                                    placeholder='Bidding Price (Octa)'
+                                />
+                                <button className="text-white text-xl button-background-color w-full h-16 mt-4 rounded-xl  font-semibold"
+                                    onClick={handleBuy}>
                                     Buy NFT
-                                </button></>)
+                                </button>
+                            </>)
                         }
                         {won &&
-                            <button className="text-white text-xl bg-purple-600 w-full h-20 mt-4 rounded-xl" onClick={handleClaimPrize}>
+                            <button className="text-white text-xl bg-purple-600 w-full h-16 mt-4 rounded-xl font-semibold" onClick={handleClaimPrize}>
                                 Claim Prize
                             </button>
                         }
 
                         {!listedNft?.bought && listedNft?.original_owner == account?.address &&
 
-                            <button className="text-white text-xl bg-red-400 w-full h-20 mt-4 rounded-xl" onClick={handleWithdraw}>
+                            <button className="text-white text-xl bg-red-400 w-full h-16 mt-4 rounded-xl font-semibold" onClick={handleWithdraw}>
                                 Withdraw NFT
                             </button>
                         }
@@ -190,10 +193,10 @@ const BuyTab: React.FC = () => {
                 </div>
 
             </div>
-            <h1 className='text-2xl text-white m-4'>
+            <h1 className='text-4xl font-bold text-white m-4 my-12'>
                 Listed NFTs
             </h1>
-            <div className="grid grid-cols-3 gap-4 bg-slate-950 w-full h-full py-8 rounded-lg p-12">
+            <div className="grid grid-cols-3 gap-4 menu-background-color w-full h-full py-8 rounded-lg p-12">
                 {
                     tokenArray.map((token, index) => {
                         return (<TokenCard key={token.current_token_data.token_data_id}

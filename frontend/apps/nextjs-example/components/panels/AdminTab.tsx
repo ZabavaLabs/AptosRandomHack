@@ -140,47 +140,54 @@ const AdminTab: React.FC = () => {
     };
     return (
         <section className="flex flex-col h-full w-full items-center">
-            <div className="flex flex-col max-w-7xl w-full p-8 bg-slate-950 rounded-lg">
-                <h2 className="text-white mb-4 text-2xl">Add NFT to lootbox</h2>
-                <form className="flex flex-col " action='N'>
+            <div className="flex flex-col max-w-7xl w-full p-12 menu-background-color rounded-lg">
+                <h2 className="text-white mb-8 font-bold text-3xl">Add NFT to lootbox</h2>
+
+                <form className="flex flex-col justify-center items-center " action='N'>
                     <input
-                        className="py-2 px-6 my-4 rounded-full"
+                        className="py-3 px-6 my-4 rounded-full w-full"
                         type="text"
                         value={nameInputText}
                         onChange={handleNameInputChange}
                         placeholder='NFT Name'
                     />
                     <input
-                        className="py-2 px-6 my-4 rounded-full"
+                        className="py-3 px-6 my-4 rounded-full w-full"
                         type="text"
                         value={descriptionInputText}
                         onChange={handleDescriptionInputChange}
                         placeholder='NFT Description'
                     />
                     <input
-                        className="py-2 px-6 my-4 rounded-full"
+                        className="py-3 px-6 my-4 rounded-full w-full"
                         type="text"
                         value={uriInputText}
                         onChange={handleUriInputChange}
                         placeholder='ipfs://'
                     />
                     <input
-                        className="py-2 px-6 my-4 rounded-full"
+                        className="py-3 px-6 my-4 rounded-full w-full"
                         type="text"
                         value={weightInputText}
                         onChange={handleWeightInputChange}
                         placeholder='Probability weight'
                     />
-                    <button onClick={handleAddNft} className=" text-white bg-blue-600 w-96 h-12 mt-4 rounded-full">
-                        Add
+                    <button
+                        //  className=" text-white text-lg button-background-color w-96 h-12 mt-4 rounded-lg">
+                        className="text-white text-xl font-semibold bg-blue-600 w-96 h-16 mt-4 rounded-xl"
+                        onClick={handleAddNft}>
+                        Add Entry
                     </button>
-                    <button onClick={handleClearNftEntries} className=" text-white bg-red-400 w-96 h-12 mt-4 rounded-full">
+                    <button
+                        className="text-white text-xl font-semibold bg-red-700 w-96 h-16 mt-4 rounded-xl"
+                        onClick={handleClearNftEntries} >
                         Clear Entries
                     </button>
                 </form>
             </div>
-            <div className="flex flex-col w-full p-8 bg-slate-950 rounded-lg mt-8 text-white">
-                <h2 className="text-white mb-4 text-2xl">Lootbox Table</h2>
+            <div className="flex flex-col w-full p-12 menu-background-color rounded-lg mt-8 text-white">
+                <h2 className="text-white mb-8 font-bold text-3xl">Lootbox Table</h2>
+
                 <table className="">
                     <thead>
                         <tr>
@@ -204,7 +211,7 @@ const AdminTab: React.FC = () => {
                 </table>
             </div>
 
-        </section>
+        </section >
     );
 };
 

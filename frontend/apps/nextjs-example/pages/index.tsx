@@ -60,13 +60,13 @@ export default function App() {
   ];
   const [activeTab, setActiveTab] = useState<number>(1);
   return (
-    <div className="flex flex-col h-full min-h-screen bg-slate-900">
-      <nav className="flex flex-row w-full bg-slate-950 py-4 px-4 justify-end h-20">
+    <div className="flex flex-col h-full min-h-screen page-background-color">
+      <nav className="flex flex-row w-full menu-background-color py-4 px-4 justify-end h-20">
         <WalletConnector />
 
       </nav>
       <div className="flex h-full w-full flex-col items-center">
-        <div className="my-8">
+        <div className="my-16">
           <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 

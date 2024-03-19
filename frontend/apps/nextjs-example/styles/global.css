@@ -11,3 +11,23 @@
     background-color: rgba(125, 125, 125, 0.1);
     /* Black color with 50% opacity */
 }
+
+.menu-background-color {
+    /* background-color: rgba(19, 22, 27, 1); */
+    background-color: rgba(38, 42, 54, 1);
+
+
+}
+
+.page-background-color {
+    /* background-color: rgb(13, 14, 18); */
+    background-color: rgb(28, 30, 42);
+}
+
+.button-background-color {
+    background-color: rgb(254, 75, 140);
+}
+
+.inactive-font {
+    color: rgb(118, 120, 135);
+}

@@ -11,7 +11,7 @@ const ListTab: React.FC = () => {
     const { setSuccessAlertMessage, setSuccessAlertHash } = useAlert();
 
     const [tokenArray, setTokenArray] = useState([])
-    const [selectedToken, setSelectedToken] = useState()
+    const [selectedToken, setSelectedToken] = useState(undefined)
     const [priceInputText, setPriceInputText] = useState(100);
 
     useEffect(() => {
@@ -62,41 +62,41 @@ const ListTab: React.FC = () => {
     return (
         <section className="flex h-full w-full justify-center items-center flex-col">
 
-            <div className="flex flex-row  w-full rounded-lg h-full max-w-4xl justify-center p-4 mx-4 bg-blue-950">
-                <div className="bg-slate-950 w-1/2  h-96 text-white justify-center items-center flex mx-4">
+            <div className="flex flex-row  w-full rounded-lg h-full max-w-4xl justify-center p-12 mx-4 menu-background-color">
+                <div className="page-background-color rounded-lg w-96  h-96 text-white justify-center items-center flex mx-4">
 
                     {selectedToken != undefined &&
 
                         < MediaRenderer
                             src={`${selectedToken?.tokenUri}`}
                             alt="Selected NFT Image"
-                            className='flex h-auto w-40'
+                            className='flex h-40 w-40'
                         />
                     }
                 </div>
-                <div className="w-1/2 flex flex-col mx-4">
-                    <h2 className="w-full text-center text-4xl text-white mb-8">Selected NFT</h2>
+                <div className="w-96 flex flex-col mx-4">
+                    <h2 className="w-full text-center text-3xl text-white mb-8 font-bold">Selected NFT</h2>
                     <p className="w-full text-center text-white mb-2">Token Name: {selectedToken?.tokenName}</p>
                     <p className="w-full text-center text-white overflow-hidden mb-2">Token Address: {selectedToken?.tokenAddress}</p>
                     <div className="flex justify-center mt-8 flex-col">
                         <input
-                            className="py-2 px-6 my-4 rounded-full"
+                            className="py-3 px-6 my-4 rounded-full"
                             type="text"
                             value={priceInputText}
                             onChange={handlePriceInputChange}
                             placeholder='Listing Price (Octa)'
                         />
-                        <button className="text-white text-xl bg-pink-600 w-full h-20 mt-4 rounded-xl" onClick={handleList}>
+                        <button className="text-white text-xl button-background-color font-semibold w-full h-16 mt-4 rounded-xl" onClick={handleList}>
                             List NFT
                         </button>
                     </div>
                 </div>
 
             </div>
-            <h1 className='text-3xl text-white m-4 mt-12'>
+            <h1 className='text-4xl font-bold text-white m-4 my-12'>
                 My NFTs
             </h1>
-            <div className="grid grid-cols-3 gap-4 bg-slate-950 w-full h-full py-6 rounded-lg p-4">
+            <div className="grid grid-cols-3 gap-4 menu-background-color w-full h-full rounded-lg p-12">
                 {
                     tokenArray.map((token, index) => {
                         return (<TokenCard key={token.current_token_data.token_data_id}
