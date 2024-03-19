@@ -25,7 +25,7 @@ const AdminTab: React.FC = () => {
 
     const handleAddNft = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::add_nft_entry`,
@@ -47,7 +47,7 @@ const AdminTab: React.FC = () => {
 
     const handleClearNftEntries = async (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::clear_nft_entries`,

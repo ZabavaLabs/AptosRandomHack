@@ -21,7 +21,7 @@ const MintTab: React.FC = () => {
 
     const handleMint = async () => {
         console.log("handleMint1")
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::mint_nft`,
@@ -43,7 +43,7 @@ const MintTab: React.FC = () => {
     }
 
     const handleClaimPrize = async () => {
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::claim_nft_from_map`,
@@ -58,7 +58,7 @@ const MintTab: React.FC = () => {
             });
             setSuccessAlertHash(response.hash, Network.RANDOMNET);
             getMintStatus();
-            getPrizeInfo();
+
 
         } catch (error) {
             console.error(error);
@@ -67,7 +67,7 @@ const MintTab: React.FC = () => {
 
 
     const getMintStatus = async () => {
-        if (!account) {
+        if (!connected) {
             setIsMintable(true)
             return
         };
@@ -87,6 +87,15 @@ const MintTab: React.FC = () => {
     }
 
     const getPrizeInfo = async () => {
+        if (!connected) {
+            return
+        };
+        if (!account?.address) {
+            return
+        };
+        if (isMintable) {
+            return
+        }
         const payload: InputViewRequestData = {
             function: `${CONTRACT_ADDR}::random_mint::get_prize_info`,
             typeArguments: [],

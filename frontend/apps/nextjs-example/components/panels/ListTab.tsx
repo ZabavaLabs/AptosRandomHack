@@ -21,7 +21,7 @@ const ListTab: React.FC = () => {
 
     const handleList = async () => {
         console.log("handleList")
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::market::list_nft`,
@@ -43,7 +43,7 @@ const ListTab: React.FC = () => {
     }
 
     const getOwnedTokens = async () => {
-        if (!account) {
+        if (!connected) {
             return
         };
         const ownedTokens = await RANDOMNET_CLIENT.getAccountOwnedTokens({ accountAddress: account?.address! });

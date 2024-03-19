@@ -24,7 +24,7 @@ const BuyTab: React.FC = () => {
 
     const handleBuy = async () => {
         console.log("handleBuy")
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::market::probabilistic_buy`,
@@ -48,7 +48,7 @@ const BuyTab: React.FC = () => {
 
     const handleClaimPrize = async () => {
         console.log("handleWithdraw")
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::market::claim_prize_nft`,
@@ -71,7 +71,7 @@ const BuyTab: React.FC = () => {
 
     const handleWithdraw = async () => {
         console.log("handleWithdraw")
-        if (!account) return;
+        if (!connected) return;
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::market::take_down_nft`,
@@ -93,7 +93,7 @@ const BuyTab: React.FC = () => {
     }
 
     const getContractOwnedTokens = async () => {
-        if (!account) {
+        if (!connected) {
             return
         };
         const ownedTokens = await RANDOMNET_CLIENT.getAccountOwnedTokens({ accountAddress: APP_SIGNER_CONTRACT_ADDR });
