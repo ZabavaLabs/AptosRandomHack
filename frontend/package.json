@@ -21,7 +21,7 @@
     "example:build": "pnpm run --filter {apps/nextjs-example} build",
     "deploy:example": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll && gh-pages --dist apps/nextjs-example/out --dotfiles",
     "my-deploy": "pnpm run example:build && pnpm run example:export && touch ./apps/nextjs-example/out/.nojekyll",
-    "my-build": "pnpm run build && pnpm run example:build"
+    "my-build": "pnpm run build && pnpm run my-deploy"
   },
   "devDependencies": {
     "@aptos-labs/eslint-config-adapter": "workspace:*",

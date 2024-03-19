@@ -13,4 +13,4 @@ RUN pnpm run my-build
 
 WORKDIR /project/apps/nextjs-example
 
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "dev"]
