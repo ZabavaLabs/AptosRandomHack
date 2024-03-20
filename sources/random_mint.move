@@ -186,7 +186,9 @@ module nft_tooling::random_mint {
         ) acquires NFTInfo {
 
         assert!(signer::address_of(account) == @nft_tooling ,ENOT_DEPLOYER);
-        let nft_info_table = &mut borrow_global_mut<NFTInfo>(nft_collection_address()).table;
+        let nft_info = borrow_global_mut<NFTInfo>(nft_collection_address());
+        nft_info.total_weight = 0;
+        let nft_info_table = &mut nft_info.table;
         smart_table::clear(nft_info_table);
     }
 

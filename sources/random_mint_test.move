@@ -23,6 +23,7 @@ module nft_tooling::random_mint_test {
     const EINVALID_BALANCE: u64 = 2;
     const ENFT_ID_NOT_FOUND: u64 = 3;
     const EINVALID_TABLE_LENGTH: u64 = 4;
+    const EINVALID_WEIGHT: u64 = 5;
 
 
 
@@ -84,6 +85,12 @@ module nft_tooling::random_mint_test {
         random_mint::claim_nft_from_map(u1);
         random_mint::mint_nft(u1);
         random_mint::claim_nft_from_map(u1);
+
+        assert!(random_mint::get_nft_total_weight()==600, EINVALID_WEIGHT);
+        random_mint::clear_nft_entries(creator);
+        assert!(random_mint::get_nft_total_weight()==0, EINVALID_WEIGHT);
+        random_mint::add_nft_entry(creator, name4, description4, uri4, 40);
+        assert!(random_mint::get_nft_total_weight()==40, EINVALID_WEIGHT);
 
 
         let balance = coin::balance<AptosCoin>(signer::address_of(u1));
