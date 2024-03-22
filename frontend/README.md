@@ -1,45 +1,37 @@
-> **_NOTE:_** Use the Wallet Adapter v2.0.0 and up with the new Aptos TypeScript SDK [@aptos-labs/ts-sdk](https://www.npmjs.com/package/@aptos-labs/ts-sdk)
+# Bonanza by Zabava Labs
 
-# Aptos Wallet Adapter
+Zabava labs is a Web3 game studio, and we are currently building a game called Undying City. One of the problems we have encountered is that there is no fast, easy, cheap and secure way to do randomness on-chain. We think that  randomness is a crucial feature for gaming applications like opening lootboxes and rewarding users with randomized daily spins.
 
-A monorepo modular wallet adapter developed and maintained by Aptos for wallet and dapp builders that includes:
+During this Aptos Random hack, we decided to build a solution for ourselves.
 
-#### Getting Started
+## Bonanza
+We present our project called Bonanza, which offers ways for people to obtain sources of wealth through randomization.
 
-- [Example app](https://github.com/aptos-labs/aptos-wallet-adapter/tree/main/apps/nextjs-example)
-- [For Aptos Dapps](https://github.com/aptos-labs/aptos-wallet-adapter/tree/main/packages/wallet-adapter-react)
-- [For Aptos Wallets](https://github.com/aptos-labs/wallet-adapter-plugin-template)
-- [Core package](https://github.com/aptos-labs/aptos-wallet-adapter/tree/main/packages/wallet-adapter-core)
-- [Wallet connect UI package](https://github.com/aptos-labs/aptos-wallet-adapter/tree/main/packages/wallet-adapter-ant-design)
+### Randomised On-Chain Lootbox
+This allows anyone to create their own lootbox and add NFTs to the lootbox. Only the admin is able to add or remove NFT metadata to the lootbox, and assign relative weights to each particular NFT.
 
-#### Supported wallet packages
+### Marketplace
+This allows anyone to list their NFT, where people can submit any amount of bid to potentially buy the NFT, where the probability of winning the NFT is higher with a higher bid. The person who listed the NFT receives APT from all the failed and successful bid.
 
-Note: These are in alphabetical order, any new wallets must be in alphabetical order
+- Currently the formula is 
+- Probability = (bidding_price/listing_price)^2
+- The formula can easily be changed in the future.
 
-- [BitgetWallet](https://www.npmjs.com/package/@bitget-wallet/aptos-wallet-adapter)
-- [Blocto](https://www.npmjs.com/package/@blocto/aptos-wallet-adapter-plugin)
-- [FaceWallet](https://www.npmjs.com/package/@haechi-labs/face-aptos-adapter-plugin)
-- [Fewcha](https://www.npmjs.com/package/fewcha-plugin-wallet-adapter)
-- [Flipper](https://www.npmjs.com/package/@flipperplatform/wallet-adapter-plugin)
-- [Martian](https://www.npmjs.com/package/@martianwallet/aptos-wallet-adapter)
-- [MSafe](https://www.npmjs.com/package/@msafe/aptos-wallet-adapter)
-- [Nightly](https://www.npmjs.com/package/@nightlylabs/aptos-wallet-adapter-plugin)
-- [OpenBlock](https://www.npmjs.com/package/@openblockhq/aptos-wallet-adapter)
-- [Petra](https://www.npmjs.com/package/petra-plugin-wallet-adapter)
-- [Pontem](https://www.npmjs.com/package/@pontem/wallet-adapter-plugin)
-- [Rise](https://www.npmjs.com/package/@rise-wallet/wallet-adapter)
-- [TokenPocket](https://www.npmjs.com/package/@tp-lab/aptos-wallet-adapter)
-- [Trust](https://www.npmjs.com/package/@trustwallet/aptos-wallet-adapter)
-- [WELLDONE](https://www.npmjs.com/package/@welldone-studio/aptos-wallet-adapter)
-- [OKX](https://www.npmjs.com/package/@okwallet/aptos-wallet-adapter)
-- [OneKey](https://www.npmjs.com/package/@onekeyfe/aptos-wallet-adapter)
 
-#### Develop Locally
+## Smart Contracts
+Located [here](/sources/)
 
-You would need `pnpm@7.14.2` in order to bootstrap and test a local copy of this repo.
 
-1. Clone the repo with `git clone https://github.com/aptos-labs/aptos-wallet-adapter.git`
-2. On the root folder, run `pnpm install` and `pnpm turbo run build`
-3. On the root folder, run `pnpm turbo run dev` - that would spin up a local server (`localhost:3000`) with the `nextjs` demoapp
+## Website
+The deployed website is 
+- https://aptosrandomhack-2-6iiddw2vtq-uc.a.run.app/
+- Currently, we have not implemented the daily wheel spinning smart contract on the frontend due to time constraints. The flow should be very similar to the minting and purchasing of lootboxes.
 
-Looking how you can contribute? Take a look at our [contribution guide](./CONTRIBUTING.md)
+To use the site:
+> Connect your wallet and dake sure you're on the Randomnet with some credits.
+
+1) Add the NFT metadata to the lootbox table 
+    - Only the deployer of the smart contract is able to control the Lootbox Table. Reach out to us if you'd like to test it out.
+    - Any changes should be reflected on the lootbox table immediately.
+ 
+2) Proceed to the Mint Tab.

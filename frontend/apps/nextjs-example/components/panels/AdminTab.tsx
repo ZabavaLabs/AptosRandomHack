@@ -30,7 +30,7 @@ const AdminTab: React.FC = () => {
             data: {
                 function: `${CONTRACT_ADDR}::random_mint::add_nft_entry`,
                 typeArguments: [],
-                functionArguments: [nameInputText, descriptionInputText, uriInputText, weightInputText],
+                functionArguments: [nameInputText, descriptionInputText, uriInputText.trim(), weightInputText],
             },
         };
         try {
@@ -118,8 +118,8 @@ const AdminTab: React.FC = () => {
         for (let i = 0; i < tableLength; i++) {
             const result = await getNftInfoEntry(i)
             fetchedResults.push(result)
-            setNftTable([...fetchedResults]);
         }
+        setNftTable([...fetchedResults]);
     }
 
 
