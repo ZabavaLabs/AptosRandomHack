@@ -19,7 +19,7 @@ This allows anyone to create their own lootbox and add NFTs to the lootbox. Only
 This allows anyone to list their NFT, where people can submit any amount of bid to potentially buy the NFT, where the probability of winning the NFT is higher with a higher bid. The person who listed the NFT receives APT from all the failed and successful bid.
 
 - Currently the formula is 
-- Probability = (bidding_price/listing_price)^2
+- Probability = bidding_price/listing_price
 - The formula can easily be changed in the future.
 
 

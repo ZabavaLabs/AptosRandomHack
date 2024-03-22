@@ -12,7 +12,7 @@ const ListTab: React.FC = () => {
 
     const [tokenArray, setTokenArray] = useState([])
     const [selectedToken, setSelectedToken] = useState(undefined)
-    const [priceInputText, setPriceInputText] = useState(100);
+    const [priceInputText, setPriceInputText] = useState();
 
     useEffect(() => {
         getOwnedTokens()
@@ -26,7 +26,7 @@ const ListTab: React.FC = () => {
             data: {
                 function: `${CONTRACT_ADDR}::market::list_nft`,
                 typeArguments: [],
-                functionArguments: [selectedToken?.tokenAddress, priceInputText],
+                functionArguments: [selectedToken?.tokenAddress, priceInputText * 100000000],
             },
         };
         try {
@@ -84,7 +84,7 @@ const ListTab: React.FC = () => {
                             type="text"
                             value={priceInputText}
                             onChange={handlePriceInputChange}
-                            placeholder='Listing Price (Octa)'
+                            placeholder='Listing Price (APT)'
                         />
                         <button className="text-white text-xl button-background-color font-semibold w-full h-16 mt-4 rounded-xl" onClick={handleList}>
                             List NFT

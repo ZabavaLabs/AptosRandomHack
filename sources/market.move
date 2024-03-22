@@ -133,8 +133,11 @@ module nft_tooling::market {
         let simple_map = &mut borrow_global_mut<NftListingMap>(@nft_tooling).simple_map;
 
         let nft_listing_info;
-        let bid_price_2_sf = ((bid_price as u256) * (bid_price as u256) * PROB_SF) ;
-        let listing_price_2 = (listing_price * listing_price as u256);
+        // Previously using squared formula
+        // let bid_price_2_sf = ((bid_price as u256) * (bid_price as u256) * PROB_SF) ;
+        // let listing_price_2 = (listing_price * listing_price as u256);
+        let bid_price_2_sf = ((bid_price as u256) * PROB_SF) ;
+        let listing_price_2 = (listing_price as u256);
         let probability_number_limit = bid_price_2_sf / listing_price_2;
         let random_number = randomness::u256_range(1, PROB_SF + 1);
 

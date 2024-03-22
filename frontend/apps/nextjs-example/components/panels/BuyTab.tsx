@@ -13,7 +13,7 @@ const BuyTab: React.FC = () => {
     const [tokenArray, setTokenArray] = useState([])
     const [selectedToken, setSelectedToken] = useState(undefined)
     const [listedNft, setListedNft] = useState()
-    const [priceInputText, setPriceInputText] = useState(100);
+    const [priceInputText, setPriceInputText] = useState();
     const [submittedBuy, setSubmittedBuy] = useState(false);
 
 
@@ -25,11 +25,12 @@ const BuyTab: React.FC = () => {
     const handleBuy = async () => {
         console.log("handleBuy")
         if (!connected) return;
+        setSubmittedBuy(false)
         const transaction: InputTransactionData = {
             data: {
                 function: `${CONTRACT_ADDR}::market::probabilistic_buy`,
                 typeArguments: [],
-                functionArguments: [selectedToken?.tokenAddress, priceInputText],
+                functionArguments: [selectedToken?.tokenAddress, priceInputText * 100000000],
             },
         };
         try {
@@ -136,7 +137,7 @@ const BuyTab: React.FC = () => {
         return value > 100 ? 100 : value;
     }
 
-    const probability = clampToMax(priceInputText / listedNft?.price * priceInputText / listedNft?.price * 100);
+    const probability = clampToMax(priceInputText * 100000000 / listedNft?.price * 100);
     const won = listedNft?.bought && listedNft?.participant == account?.address
     return (
         <section className="flex h-full w-full justify-center items-center flex-col">
@@ -155,7 +156,7 @@ const BuyTab: React.FC = () => {
                 </div>
                 <div className="w-96 flex flex-col mx-4">
                     <h2 className="w-full text-center text-3xl text-white mb-8 font-bold">Selected NFT</h2>
-                    <h3 className="w-full text-center  text-white mb-2">Listing Price: {listedNft?.price}</h3>
+                    <h3 className="w-full text-center  text-white mb-2">Listing Price: {listedNft?.price / 100000000} APT</h3>
                     <p className="w-full text-center text-white mb-2">Token Name: {selectedToken?.tokenName}</p>
                     <p className="w-full text-center text-white overflow-hidden mb-2">Token Address: {selectedToken?.tokenAddress}</p>
                     <p className="w-full text-center text-2xl font-medium text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(4)}%</p>
@@ -169,7 +170,7 @@ const BuyTab: React.FC = () => {
                                     type="text"
                                     value={priceInputText}
                                     onChange={handlePriceInputChange}
-                                    placeholder='Bidding Price (Octa)'
+                                    placeholder='Bidding Price (APT)'
                                 />
                                 <button className="text-white text-xl button-background-color w-full h-16 mt-4 rounded-xl  font-semibold"
                                     onClick={handleBuy}>
