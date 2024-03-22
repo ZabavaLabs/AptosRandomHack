@@ -1,7 +1,10 @@
 # Bonanza by Zabava Labs
-<div align="center">
+&nbsp;
+<div align="center" >
 <img width="200" src="readme/Logo.png"/>
 </div>
+&nbsp;
+
 Zabava labs is a Web3 game studio, and we are currently building a game called Undying City. One of the problems we have encountered is that there is no fast, easy, cheap and secure way to do randomness on-chain. We think that  randomness is a crucial feature for gaming applications like opening lootboxes and rewarding users with randomized daily spins.
 
 During this Aptos Random hack, we decided to build a solution for ourselves.

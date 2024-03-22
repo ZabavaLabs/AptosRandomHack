@@ -61,7 +61,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<number>(1);
   return (
     <div className="flex flex-col h-full min-h-screen page-background-color">
-      <nav className="flex flex-row w-full menu-background-color py-4 px-4 justify-end h-20">
+      <nav className="flex flex-row w-full menu-background-color py-4 px-4 justify-between h-20">
+        <img src="Logo.png" />
         <WalletConnector />
 
       </nav>
