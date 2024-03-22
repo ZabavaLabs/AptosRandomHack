@@ -27,7 +27,7 @@ module nft_tooling::spin_wheel {
     const EINVALID_COLLECTION: u64 = 1;
     const ECLAIM_FIRST: u64 = 2;
 
-
+    #[test_only]
     friend nft_tooling::random_mint_test;
 
     #[test_only]

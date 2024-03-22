@@ -20,5 +20,5 @@ export const TESTNET_CLIENT = new Aptos(TESTNET_CONFIG);
 export const RANDOMNET_CONFIG = new AptosConfig({ network: Network.RANDOMNET });
 export const RANDOMNET_CLIENT = new Aptos(RANDOMNET_CONFIG);
 
-export const CONTRACT_ADDR = "0xc15960d4d41a199fbe4b23aeeec0ba442bd1f0ec5b8b85417dee2aa24ac19c21";
-export const APP_SIGNER_CONTRACT_ADDR = "0x1ec2454245f0ba851c99956088c24ee95d839ffe80662a751a07400dd4433f75";
+export const CONTRACT_ADDR = "0x1cfbbe1d6d623f09f507c08587d5067beaaa3614ffc503e40512035d37c87a6b";
+export const APP_SIGNER_CONTRACT_ADDR = "0x4047ea50c79a056ff38a30febefbc020eee91527a73c26b70c8a42d8746b4f48";

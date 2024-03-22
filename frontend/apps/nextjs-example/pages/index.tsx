@@ -73,7 +73,7 @@ export default function App() {
 
         <div>
           {tabs.map((tab, index) =>
-            index === activeTab ? <div className="flex h-full w-full" key={index}>{tab.content}</div> : null
+            index === activeTab ? <div className="flex h-full w-full mb-12" key={index}>{tab.content}</div> : null
           )}
         </div>
       </div>
