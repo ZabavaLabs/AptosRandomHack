@@ -158,7 +158,7 @@ const BuyTab: React.FC = () => {
                     <h3 className="w-full text-center  text-white mb-2">Listing Price: {listedNft?.price}</h3>
                     <p className="w-full text-center text-white mb-2">Token Name: {selectedToken?.tokenName}</p>
                     <p className="w-full text-center text-white overflow-hidden mb-2">Token Address: {selectedToken?.tokenAddress}</p>
-                    <p className="w-full text-center text-2xl font-medium text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(2)}%</p>
+                    <p className="w-full text-center text-2xl font-medium text-green-400 overflow-hidden mb-2 mt-4">Win Probability: {(probability ? probability : 0).toFixed(4)}%</p>
                     {submittedBuy && <p className="text-yellow-400 text-center text-xl my-4">{won ? "Congratulations, You Won!" : "It's not your lucky day! Try again."}</p>}
                     <div className="flex justify-center mt-8 flex-col">
 
