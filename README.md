@@ -1,5 +1,7 @@
 # Bonanza by Zabava Labs
-
+<div align="center">
+<img width="200" src="readme/Logo.png"/>
+</div>
 Zabava labs is a Web3 game studio, and we are currently building a game called Undying City. One of the problems we have encountered is that there is no fast, easy, cheap and secure way to do randomness on-chain. We think that  randomness is a crucial feature for gaming applications like opening lootboxes and rewarding users with randomized daily spins.
 
 During this Aptos Random hack, we decided to build a solution for ourselves.
@@ -78,3 +80,7 @@ To use the site:
     - If you are the lister of the NFT, you can withdraw it, provided it is not bought yet.
     - Submit a bid to buy other NFTs.
     - A Claim Prize button should appear if you win it.
+
+
+## Roadmap
+- We plan to integrate the smart contracts and launch it under certain features of Undying City.
